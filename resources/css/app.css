@@ -1,0 +1,224 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Alpine.js x-cloak — sembunyikan elemen dengan x-cloak SEBELUM
+   Alpine.js selesai inisialisasi. Mencegah FOUC (Flash of Unstyled
+   Content) saat halaman reload atau navigasi.
+   ============================================================ */
+[x-cloak] {
+    display: none !important;
+}
+
+
+/* ============================================================
+   Edelweiss Detection - Custom Theme
+   Tailwind v4 menggunakan @theme untuk custom design tokens
+   ============================================================ */
+
+@theme {
+    /* Brand colors */
+    --color-brand-50: #f0fdf4;
+    --color-brand-100: #dcfce7;
+    --color-brand-500: #22c55e;
+    --color-brand-600: #16a34a;
+    --color-brand-700: #15803d;
+
+    /* 5 Fase Pertumbuhan Edelweis */
+    /* Fase 1: Kuncup - hijau muda segar */
+    --color-fase-kuncup: #84cc16;
+    --color-fase-kuncup-bg: #ecfccb;
+    --color-fase-kuncup-text: #4d7c0f;
+
+    /* Fase 2: Mekar - rose/pink */
+    --color-fase-mekar: #f43f5e;
+    --color-fase-mekar-bg: #ffe4e6;
+    --color-fase-mekar-text: #be123c;
+
+    /* Fase 3: Pematangan Biji - kuning keemasan */
+    --color-fase-pematangan: #eab308;
+    --color-fase-pematangan-bg: #fef9c3;
+    --color-fase-pematangan-text: #854d0e;
+
+    /* Fase 4: Biji Matang - coklat amber */
+    --color-fase-bijimatang: #b45309;
+    --color-fase-bijimatang-bg: #fed7aa;
+    --color-fase-bijimatang-text: #7c2d12;
+
+    /* Fase 5: Penyemaian Baru - emerald gelap */
+    --color-fase-penyemaian: #059669;
+    --color-fase-penyemaian-bg: #d1fae5;
+    --color-fase-penyemaian-text: #065f46;
+}
+
+/* Dark mode menggunakan class strategy */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Smooth transitions untuk dark mode toggle */
+html {
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+body {
+    font-family: 'Instrument Sans', system-ui, -apple-system, sans-serif;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+.dark ::-webkit-scrollbar-thumb {
+    background: #475569;
+}
+
+/* Animasi untuk empty state & loading */
+@keyframes pulse-soft {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+.animate-pulse-soft {
+    animation: pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Sidebar transition */
+.sidebar-transition {
+    transition: transform 0.3s ease, width 0.3s ease;
+}
+
+/* Custom utility untuk badge fase */
+.badge-fase {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+
+/* ============================================================
+   AI Scan Effect - efek loading saat deteksi
+   ============================================================ */
+
+.ai-scan-overlay {
+    overflow: hidden;
+}
+
+/* Corner brackets - 4 sudut */
+.ai-bracket {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border: 3px solid #34d399; /* emerald-400 */
+    box-shadow: 0 0 12px rgba(52, 211, 153, 0.6);
+    animation: ai-bracket-pulse 1.5s ease-in-out infinite;
+}
+
+.ai-bracket-tl {
+    top: 12px;
+    left: 12px;
+    border-right: 0;
+    border-bottom: 0;
+    border-top-left-radius: 4px;
+}
+
+.ai-bracket-tr {
+    top: 12px;
+    right: 12px;
+    border-left: 0;
+    border-bottom: 0;
+    border-top-right-radius: 4px;
+}
+
+.ai-bracket-bl {
+    bottom: 12px;
+    left: 12px;
+    border-right: 0;
+    border-top: 0;
+    border-bottom-left-radius: 4px;
+}
+
+.ai-bracket-br {
+    bottom: 12px;
+    right: 12px;
+    border-left: 0;
+    border-top: 0;
+    border-bottom-right-radius: 4px;
+}
+
+@keyframes ai-bracket-pulse {
+    0%, 100% {
+        opacity: 0.7;
+        box-shadow: 0 0 8px rgba(52, 211, 153, 0.4);
+    }
+    50% {
+        opacity: 1;
+        box-shadow: 0 0 16px rgba(52, 211, 153, 0.8);
+    }
+}
+
+/* Scan line - garis bergerak vertikal */
+.ai-scan-line {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    top: 12px;
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(52, 211, 153, 0) 5%,
+        rgba(52, 211, 153, 1) 50%,
+        rgba(52, 211, 153, 0) 95%,
+        transparent 100%
+    );
+    box-shadow:
+        0 0 12px rgba(52, 211, 153, 0.8),
+        0 0 24px rgba(52, 211, 153, 0.5),
+        0 0 36px rgba(52, 211, 153, 0.3);
+    animation: ai-scan-move 2s ease-in-out infinite;
+}
+
+@keyframes ai-scan-move {
+    0% {
+        top: 12px;
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    50% {
+        top: calc(100% - 14px);
+        opacity: 1;
+    }
+    60% {
+        opacity: 0;
+    }
+    100% {
+        top: 12px;
+        opacity: 0;
+    }
+}
+
+/* ============================================================
+   Page Loader - Progress bar tipis di top (YouTube style)
+   ============================================================ */
+
+#page-loader-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0%;
+    background: linear-gradient(90deg, #10b981 0%, #34d399 50%, #6ee7b7 100%);
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.6), 0 0 5px rgba(16, 185, 129, 0.4);
+    z-index: 9999;
+    transition: width 0.4s ease-out, opacity 0.3s ease-out;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#page-loader-bar.active {
+    opacity: 1;
+}
