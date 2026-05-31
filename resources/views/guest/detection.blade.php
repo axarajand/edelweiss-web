@@ -183,10 +183,16 @@
                                     :title="isFullscreen ? 'Keluar Layar Penuh (Esc)' : 'Layar Penuh'"
                                     :aria-label="isFullscreen ? 'Keluar Layar Penuh' : 'Layar Penuh'">
                                 <svg x-show="!isFullscreen" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 4H4v6M4 4l6 6" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 4h6v6M20 4l-6 6" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 20H4v-6M4 20l6-6" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 20h6v-6M20 20l-6-6" />
                                 </svg>
                                 <svg x-show="isFullscreen" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 9V5m0 0H5m4 0L4 4m11 5h4m0 0V5m0 4l5-5M9 15v4m0 0H5m4 0l-5 5m11-5h4m0 0v4m0-4l5 5"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 4l5 5m0 0H5m4 0V5" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M20 4l-5 5m0 0h4m-4 0V5" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 20l5-5m0 0H5m4 0v4" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M20 20l-5-5m0 0h4m-4 0v4" />
                                 </svg>
                             </button>
 
