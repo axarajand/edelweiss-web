@@ -149,7 +149,7 @@
                     </div>
 
                     <div class="p-5">
-                        <div class="relative bg-black rounded-xl overflow-hidden aspect-video">
+                        <div id="camera-container" class="relative bg-black rounded-xl overflow-hidden aspect-video">
                             <video id="video" class="w-full h-full object-contain" autoplay playsinline muted></video>
                             <canvas id="overlay" class="absolute inset-0 w-full h-full pointer-events-none"></canvas>
 
@@ -165,11 +165,34 @@
                                 LIVE
                             </div>
 
-                            {{-- Badge "objek terdeteksi" — kanan atas saat kamera aktif --}}
-                            <div x-show="cameraActive && results.length > 0" x-cloak
-                                 class="absolute top-3 right-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-600/90 text-white text-xs font-medium backdrop-blur">
+                            {{-- Badge "objek terdeteksi" — kanan atas saat kamera aktif (normal mode) --}}
+                            <div x-show="cameraActive && results.length > 0 && !isFullscreen" x-cloak
+                                 class="absolute top-3 right-12 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-600/90 text-white text-xs font-medium backdrop-blur">
                                 <span x-text="`${results.length} objek terdeteksi`"></span>
                             </div>
+
+                            {{-- Badge "objek terdeteksi" — saat fullscreen (top center) --}}
+                            <div x-show="cameraActive && results.length > 0 && isFullscreen" x-cloak
+                                 class="absolute top-4 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-600/90 text-white text-sm font-medium backdrop-blur">
+                                <span x-text="`${results.length} objek terdeteksi`"></span>
+                            </div>
+
+                            {{-- Tombol toggle Fullscreen — pojok kanan atas, hanya muncul saat kamera aktif --}}
+                            <button x-show="cameraActive" x-cloak
+                                    @click="toggleFullscreen()"
+                                    type="button"
+                                    class="camera-fullscreen-toggle"
+                                    :title="isFullscreen ? 'Keluar Layar Penuh (Esc)' : 'Layar Penuh'"
+                                    :aria-label="isFullscreen ? 'Keluar Layar Penuh' : 'Layar Penuh'">
+                                {{-- Icon: enter fullscreen --}}
+                                <svg x-show="!isFullscreen" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                                </svg>
+                                {{-- Icon: exit fullscreen --}}
+                                <svg x-show="isFullscreen" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 9V5m0 0H5m4 0L4 4m11 5h4m0 0V5m0 4l5-5M9 15v4m0 0H5m4 0l-5 5m11-5h4m0 0v4m0-4l5 5"/>
+                                </svg>
+                            </button>
 
                             {{-- Capturing flash overlay --}}
                             <div x-show="isCapturing" x-cloak
@@ -180,9 +203,56 @@
                                  x-transition:leave-start="opacity-100"
                                  x-transition:leave-end="opacity-0"
                                  class="absolute inset-0 bg-white pointer-events-none"></div>
+
+                            {{-- Toolbar floating bottom — hanya muncul saat fullscreen --}}
+                            <div x-show="isFullscreen && cameraActive" x-cloak
+                                 class="camera-fullscreen-toolbar">
+                                {{-- Tombol Potret di fullscreen --}}
+                                <button @click="capturePhoto()"
+                                        x-show="results.length > 0"
+                                        x-cloak
+                                        :disabled="isCapturing"
+                                        type="button"
+                                        class="rounded-full bg-blue-600 text-white font-medium hover:bg-blue-700
+                                               disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-2">
+                                    <template x-if="!isCapturing">
+                                        <span class="inline-flex items-center gap-2">
+                                            <x-icon name="camera" class="w-4 h-4" />
+                                            Potret
+                                        </span>
+                                    </template>
+                                    <template x-if="isCapturing">
+                                        <span class="inline-flex items-center gap-2">
+                                            <svg class="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
+                                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-opacity="0.25"/>
+                                                <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                                            </svg>
+                                            Menyimpan...
+                                        </span>
+                                    </template>
+                                </button>
+
+                                {{-- Tombol Stop di fullscreen --}}
+                                <button @click="stopCamera()"
+                                        type="button"
+                                        class="rounded-full bg-rose-600 text-white font-medium hover:bg-rose-700 inline-flex items-center gap-2">
+                                    Stop Kamera
+                                </button>
+
+                                {{-- Tombol Keluar Fullscreen --}}
+                                <button @click="exitFullscreen()"
+                                        type="button"
+                                        class="rounded-full bg-white/20 text-white font-medium hover:bg-white/30 inline-flex items-center gap-2 backdrop-blur">
+                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 9V5m0 0H5m4 0L4 4m11 5h4m0 0V5m0 4l5-5M9 15v4m0 0H5m4 0l-5 5m11-5h4m0 0v4m0-4l5 5"/>
+                                    </svg>
+                                    Keluar Layar Penuh
+                                </button>
+                            </div>
                         </div>
 
-                        <div class="mt-4 flex flex-col sm:flex-row gap-2">
+                        <div class="mt-4 flex flex-col sm:flex-row gap-2 camera-normal-controls"
+                             :class="{ 'hidden': isFullscreen }">
                             <button @click="startCamera()" :disabled="cameraActive"
                                     class="px-5 py-2.5 rounded-lg bg-emerald-600 text-white font-medium hover:bg-emerald-700
                                            disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2">

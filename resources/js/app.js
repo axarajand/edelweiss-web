@@ -49,7 +49,8 @@ window.detectionPage = function () {
         cameraActive: false,
         cameraStatus: '',
         detectLoopActive: false,
-        isCapturing: false,        // ← NEW: flag saat user klik "Potret"
+        isCapturing: false,        // flag saat user klik "Potret"
+        isFullscreen: false,       // flag saat kamera mode fullscreen
         FRAME_INTERVAL_MS: 800,
 
         get csrfToken() {
@@ -174,7 +175,107 @@ window.detectionPage = function () {
             Alpine.store('toast').show(msg, 'error', 5000);
         },
 
+        /**
+         * Toggle mode fullscreen kamera.
+         * Kombinasi CSS fullscreen + native Fullscreen API.
+         */
+        toggleFullscreen() {
+            if (this.isFullscreen) {
+                this.exitFullscreen();
+            } else {
+                this.enterFullscreen();
+            }
+        },
+
+        /**
+         * Masuk mode fullscreen kamera.
+         * - Tambah CSS class ke container kamera
+         * - Lock scroll body
+         * - Coba request native fullscreen (kalau didukung browser)
+         */
+        enterFullscreen() {
+            const container = document.getElementById('camera-container');
+            if (!container) return;
+
+            // CSS fullscreen
+            container.classList.add('camera-fullscreen');
+            document.body.classList.add('has-fullscreen-camera');
+            this.isFullscreen = true;
+
+            // Coba request native fullscreen (untuk hide browser UI di mobile)
+            try {
+                if (container.requestFullscreen) {
+                    container.requestFullscreen().catch(() => {
+                        // Silent fail — CSS fullscreen sudah cukup
+                    });
+                } else if (container.webkitRequestFullscreen) {
+                    container.webkitRequestFullscreen();
+                } else if (container.msRequestFullscreen) {
+                    container.msRequestFullscreen();
+                }
+            } catch (e) {
+                // Native fullscreen tidak didukung, lanjut dengan CSS fullscreen saja
+            }
+        },
+
+        /**
+         * Keluar dari mode fullscreen.
+         */
+        exitFullscreen() {
+            const container = document.getElementById('camera-container');
+            if (container) {
+                container.classList.remove('camera-fullscreen');
+            }
+            document.body.classList.remove('has-fullscreen-camera');
+            this.isFullscreen = false;
+
+            // Exit native fullscreen kalau aktif
+            try {
+                if (document.fullscreenElement) {
+                    document.exitFullscreen().catch(() => {});
+                } else if (document.webkitFullscreenElement) {
+                    document.webkitExitFullscreen();
+                } else if (document.msFullscreenElement) {
+                    document.msExitFullscreen();
+                }
+            } catch (e) {
+                // Silent fail
+            }
+        },
+
+        /**
+         * Listener: kalau user keluar fullscreen via Esc/swipe,
+         * sync state isFullscreen supaya UI ikut update.
+         */
+        _initFullscreenListener() {
+            if (this._fullscreenListenerAdded) return;
+            this._fullscreenListenerAdded = true;
+
+            const handler = () => {
+                const isNativeFS = !!(
+                    document.fullscreenElement ||
+                    document.webkitFullscreenElement ||
+                    document.msFullscreenElement
+                );
+                // Kalau native fullscreen exit tapi state masih fullscreen,
+                // berarti user pencet Esc — sync state.
+                if (!isNativeFS && this.isFullscreen) {
+                    const container = document.getElementById('camera-container');
+                    if (container) {
+                        container.classList.remove('camera-fullscreen');
+                    }
+                    document.body.classList.remove('has-fullscreen-camera');
+                    this.isFullscreen = false;
+                }
+            };
+
+            document.addEventListener('fullscreenchange', handler);
+            document.addEventListener('webkitfullscreenchange', handler);
+            document.addEventListener('msfullscreenchange', handler);
+        },
+
         async startCamera() {
+            this._initFullscreenListener();
             try {
                 this.cameraStream = await navigator.mediaDevices.getUserMedia({
                     video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } },
@@ -202,6 +303,11 @@ window.detectionPage = function () {
         },
 
         stopCamera() {
+            // Auto exit fullscreen saat camera distop
+            if (this.isFullscreen) {
+                this.exitFullscreen();
+            }
+
             this.detectLoopActive = false;
             if (this.cameraStream) {
                 this.cameraStream.getTracks().forEach(t => t.stop());
