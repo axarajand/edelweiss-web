@@ -41,6 +41,9 @@
             camera_in_use: @json(__('detection.errors.camera_in_use')),
             camera_generic: @json(__('detection.errors.camera_generic')),
             understand: @json(__('messages.action.understand')),
+            checking_status: @json(__('messages.status.checking_status')),
+            ml_active: 'ML Service: ' + @json(__('messages.status.active')),
+            ml_offline: 'ML Service: ' + @json(__('messages.status.offline')),
         };
     </script>
 

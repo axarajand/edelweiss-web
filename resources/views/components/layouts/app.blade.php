@@ -37,6 +37,9 @@
             camera_in_use: @json(__('detection.errors.camera_in_use')),
             camera_generic: @json(__('detection.errors.camera_generic')),
             understand: @json(__('messages.action.understand')),
+            checking_status: @json(__('messages.status.checking_status')),
+            ml_active: 'ML Service: ' + @json(__('messages.status.active')),
+            ml_offline: 'ML Service: ' + @json(__('messages.status.offline')),
         };
     </script>
 
@@ -103,7 +106,7 @@
             <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-800">
                 @php $isUserMgmt = request()->routeIs('admin.users.*'); @endphp
                 <a href="{{ route('admin.users.index') }}"
-                   :title="!$store.sidebar.open ? '{{ __(\'messages.nav.users\') }}' : ''"
+                   :title="!$store.sidebar.open ? '{{ __('messages.nav.users') }}' : ''"
                    class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition
                           {{ $isUserMgmt
                               ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400'
@@ -115,7 +118,7 @@
                           x-transition:enter-start="opacity-0"
                           x-transition:enter-end="opacity-100"
                           class="whitespace-nowrap">
-                        Manajemen User
+                        {{ __('messages.nav.users') }}
                     </span>
                 </a>
             </div>
@@ -220,12 +223,12 @@
                               'bg-rose-500': status === 'offline',
                               'bg-amber-400 animate-pulse': status === 'checking'
                           }"></span>
-                    <span x-text="status === 'online' ? @json(__('messages.status.online')) + ' Service' : status === 'offline' ? @json(__('messages.status.offline')) + ' Service' : @json(__('messages.status.loading'))"></span>
+                    <span x-text="status === 'online' ? 'ML Service' : status === 'offline' ? 'ML Offline' : (window.lang?.checking_status || 'Checking...')"></span>
 
                     {{-- Tooltip on hover --}}
                     <div class="absolute top-full right-0 mt-2 w-64 p-3 rounded-lg bg-slate-900 dark:bg-slate-700 text-white text-xs shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 pointer-events-none">
                         <div class="font-semibold mb-1.5">
-                            <span x-text="status === 'online' ? 'ML Service: ' + @json(__('messages.status.active')) : status === 'offline' ? 'ML Service: ' + @json(__('messages.status.offline')) : @json(__('messages.status.checking_status'))"></span>
+                            <span x-text="status === 'online' ? (window.lang?.ml_active || 'ML Service: Aktif') : status === 'offline' ? (window.lang?.ml_offline || 'ML Service: Offline') : (window.lang?.checking_status || 'Memeriksa status...')"></span>
                         </div>
                         <div class="space-y-1 text-slate-300">
                             <div class="flex justify-between gap-2">
