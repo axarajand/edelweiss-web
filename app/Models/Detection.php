@@ -85,4 +85,45 @@ class Detection extends Model
 
         return $count > 0 ? $total / $count : 0;
     }
+
+    /**
+     * Breakdown jumlah objek per label, di-sort dari yang terbanyak.
+     * Dipakai untuk tampilkan multi badge compact di card riwayat.
+     *
+     * Contoh return:
+     *   [
+     *     ['label' => 'Mekar', 'count' => 3],
+     *     ['label' => 'Penyemaian', 'count' => 1],
+     *   ]
+     */
+    public function getLabelBreakdownAttribute(): array
+    {
+        $detections = $this->result['detections'] ?? [];
+        if (empty($detections)) {
+            return [];
+        }
+
+        $counts = [];
+        foreach ($detections as $det) {
+            $label = $det['label'] ?? null;
+            if ($label) {
+                $counts[$label] = ($counts[$label] ?? 0) + 1;
+            }
+        }
+
+        if (empty($counts)) {
+            return [];
+        }
+
+        // Sort by count descending (terbanyak duluan)
+        arsort($counts);
+
+        // Convert ke array of associative
+        $result = [];
+        foreach ($counts as $label => $count) {
+            $result[] = ['label' => $label, 'count' => $count];
+        }
+
+        return $result;
+    }
 }

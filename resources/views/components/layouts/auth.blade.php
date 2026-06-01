@@ -25,9 +25,34 @@
         }
     </script>
 
+
+    {{-- Inject translation keys untuk JS (toast/modal messages) --}}
+    <script>
+        window.lang = {
+            file_invalid: @json(__('detection.errors.file_invalid')),
+            file_too_big: @json(__('detection.errors.file_too_big')),
+            timeout: @json(__('detection.errors.timeout')),
+            network: @json(__('detection.errors.network')),
+            service_offline_title: @json(__('detection.errors.service_offline_title')),
+            service_offline_message: @json(__('detection.errors.service_offline_message')),
+            generic: @json(__('detection.errors.generic')),
+            camera_permission_denied: @json(__('detection.errors.camera_permission_denied')),
+            camera_not_found: @json(__('detection.errors.camera_not_found')),
+            camera_in_use: @json(__('detection.errors.camera_in_use')),
+            camera_generic: @json(__('detection.errors.camera_generic')),
+            understand: @json(__('messages.action.understand')),
+        };
+    </script>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 min-h-screen antialiased">
+
+    {{-- Language switcher floating top-right --}}
+    <div class="fixed top-4 right-4 z-50">
+        <x-language-switcher />
+    </div>
+
 
     <div class="min-h-screen flex items-center justify-center px-4 py-8">
         <div class="w-full max-w-md">
@@ -35,8 +60,8 @@
             {{-- Logo & branding --}}
             <div class="flex flex-col items-center mb-8">
                 <x-logo class="w-16 h-16 mb-4" />
-                <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Edelweiss Detection</h1>
-                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Panel Admin</p>
+                <h1 class="text-2xl font-bold text-slate-900 dark:text-white">{{ __('messages.brand_name') }}</h1>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">{{ __('auth.login.subtitle') }}</p>
             </div>
 
             {{-- Flash messages --}}
@@ -60,7 +85,7 @@
             {{-- Footer link --}}
             <div class="mt-6 text-center">
                 <a href="/" class="text-xs text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition">
-                    ← Kembali ke halaman publik
+                    ← {{ __('auth.login.back_to_home') }}
                 </a>
             </div>
         </div>

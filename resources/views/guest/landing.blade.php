@@ -1,4 +1,4 @@
-<x-layouts.guest title="Edelweiss Detection - Deteksi Kesehatan Bunga Edelweiss Jawa">
+<x-layouts.guest :title="__('landing.hero.title_line1') . ' ' . __('landing.hero.title_line2')">
 
     {{-- ============================================================
          HERO SECTION
@@ -16,42 +16,40 @@
             <div class="max-w-2xl">
 
                 <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white tracking-tight leading-tight mb-6">
-                    Deteksi Kesehatan
+                    {{ __('landing.hero.title_line1') }}
                     <span class="block bg-gradient-to-r from-emerald-600 to-green-700 dark:from-emerald-400 dark:to-green-500 bg-clip-text text-transparent">
-                        Bunga Edelweiss Jawa
+                        {{ __('landing.hero.title_line2') }}
                     </span>
                 </h1>
 
                 <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-8 max-w-xl">
-                    Pantau kesehatan bunga Edelweiss dari foto. Sistem mengenali setiap bunga di gambar
-                    lalu menentukan kondisi kesehatannya &mdash; cocok untuk pendaki, peneliti, dan
-                    pemerhati tanaman endemik <em class="not-italic font-medium">Anaphalis javanica</em>.
+                    {!! __('landing.hero.description') !!}
                 </p>
 
                 <div class="flex flex-col sm:flex-row gap-3">
                     <a href="{{ route('guest.detection') }}"
                        class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-emerald-600 text-white font-medium hover:bg-emerald-700 transition shadow-lg shadow-emerald-600/20">
                         <x-icon name="scan" class="w-5 h-5" />
-                        Cek Kesehatan Sekarang
+                        {{ __('landing.hero.cta_primary') }}
                     </a>
                     <a href="#kondisi"
                        class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-medium border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition">
-                        Pelajari Kondisinya
+                        {{ __('landing.hero.cta_secondary') }}
                     </a>
                 </div>
 
                 <div class="mt-10 flex flex-wrap gap-6 items-center text-sm text-slate-500 dark:text-slate-400">
                     <div class="flex items-center gap-2">
                         <x-icon name="check-circle" class="w-4 h-4 text-emerald-500" />
-                        <span>Tanpa daftar</span>
+                        <span>{{ __('landing.hero.feature_no_register') }}</span>
                     </div>
                     <div class="flex items-center gap-2">
                         <x-icon name="check-circle" class="w-4 h-4 text-emerald-500" />
-                        <span>Hasil cepat</span>
+                        <span>{{ __('landing.hero.feature_fast') }}</span>
                     </div>
                     <div class="flex items-center gap-2">
                         <x-icon name="check-circle" class="w-4 h-4 text-emerald-500" />
-                        <span>Gratis</span>
+                        <span>{{ __('landing.hero.feature_free') }}</span>
                     </div>
                 </div>
             </div>
@@ -66,30 +64,21 @@
 
             <div class="max-w-2xl mx-auto text-center mb-12">
                 <p class="text-sm font-semibold text-emerald-600 dark:text-emerald-400 mb-2 uppercase tracking-wider">
-                    Indikator Kesehatan
+                    {{ __('landing.conditions.eyebrow') }}
                 </p>
                 <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-4">
-                    Kondisi Kesehatan yang Dapat Dideteksi
+                    {{ __('landing.conditions.title') }}
                 </h2>
                 <p class="text-base text-slate-600 dark:text-slate-400">
-                    Sistem mengenali tiga kondisi kesehatan utama dari bunga Edelweiss Jawa.
+                    {{ __('landing.conditions.subtitle') }}
                 </p>
             </div>
 
             @php
                 $kondisi = [
-                    [
-                        'nama' => 'Mekar',
-                        'desc' => 'Bunga sehat dengan mahkota terbuka penuh. Menandakan tanaman tumbuh dengan baik.',
-                    ],
-                    [
-                        'nama' => 'Sangat_Mekar',
-                        'desc' => 'Bunga di puncak mekarnya. Tanda kondisi tanaman optimal dan lingkungan mendukung.',
-                    ],
-                    [
-                        'nama' => 'Penyemaian',
-                        'desc' => 'Fase awal pertumbuhan. Penting untuk regenerasi populasi Edelweiss di habitat aslinya.',
-                    ],
+                    ['nama' => 'Mekar', 'desc' => __('landing.conditions.mekar.desc')],
+                    ['nama' => 'Sangat_Mekar', 'desc' => __('landing.conditions.sangat_mekar.desc')],
+                    ['nama' => 'Penyemaian', 'desc' => __('landing.conditions.penyemaian.desc')],
                 ];
             @endphp
 
@@ -102,7 +91,7 @@
                             </span>
                             <x-fase-badge :fase="$k['nama']" />
                         </div>
-                        <h3 class="font-bold text-slate-900 dark:text-white mb-2">{{ str_replace('_', ' ', $k['nama']) }}</h3>
+                        <h3 class="font-bold text-slate-900 dark:text-white mb-2">{{ __('messages.kondisi.' . $k['nama']) }}</h3>
                         <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
                             {{ $k['desc'] }}
                         </p>
@@ -111,7 +100,7 @@
             </div>
 
             <p class="mt-8 text-center text-xs text-slate-500 dark:text-slate-400 max-w-2xl mx-auto">
-                Sistem akan terus dikembangkan untuk mengenali lebih banyak indikator kesehatan Edelweiss ke depannya.
+                {{ __('landing.conditions.note') }}
             </p>
         </div>
     </section>
@@ -124,13 +113,13 @@
 
             <div class="max-w-2xl mx-auto text-center mb-12">
                 <p class="text-sm font-semibold text-emerald-600 dark:text-emerald-400 mb-2 uppercase tracking-wider">
-                    Cara Pakai
+                    {{ __('landing.how.eyebrow') }}
                 </p>
                 <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-4">
-                    Tiga Langkah Mudah
+                    {{ __('landing.how.title') }}
                 </h2>
                 <p class="text-base text-slate-600 dark:text-slate-400">
-                    Tidak perlu pengetahuan teknis &mdash; siapa saja bisa cek kesehatan Edelweiss-nya.
+                    {!! __('landing.how.subtitle') !!}
                 </p>
             </div>
 
@@ -141,10 +130,10 @@
                         <x-icon name="upload" class="w-6 h-6" />
                     </div>
                     <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">
-                        1. Foto atau Upload
+                        {{ __('landing.how.step1_title') }}
                     </h3>
                     <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                        Pilih foto Edelweiss dari galeri, atau gunakan kamera langsung untuk memotret di tempat.
+                        {{ __('landing.how.step1_desc') }}
                     </p>
                     <div class="hidden md:block absolute top-6 -right-4 lg:-right-8">
                         <svg class="w-8 h-2 text-slate-300 dark:text-slate-700" fill="none" viewBox="0 0 32 8">
@@ -158,10 +147,10 @@
                         <x-icon name="scan" class="w-6 h-6" />
                     </div>
                     <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">
-                        2. Sistem Menganalisis
+                        {{ __('landing.how.step2_title') }}
                     </h3>
                     <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                        Setiap bunga di gambar diidentifikasi, lalu ditentukan kondisi kesehatannya secara otomatis.
+                        {{ __('landing.how.step2_desc') }}
                     </p>
                     <div class="hidden md:block absolute top-6 -right-4 lg:-right-8">
                         <svg class="w-8 h-2 text-slate-300 dark:text-slate-700" fill="none" viewBox="0 0 32 8">
@@ -175,10 +164,10 @@
                         <x-icon name="check-circle" class="w-6 h-6" />
                     </div>
                     <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">
-                        3. Lihat Hasil
+                        {{ __('landing.how.step3_title') }}
                     </h3>
                     <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                        Hasil muncul dalam hitungan detik &mdash; lengkap dengan kotak penanda dan label kondisi setiap bunga.
+                        {!! __('landing.how.step3_desc') !!}
                     </p>
                 </div>
             </div>
@@ -191,24 +180,24 @@
     <section class="py-16 lg:py-24 bg-gradient-to-br from-emerald-600 to-green-700 dark:from-emerald-700 dark:to-green-800">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
-                Siap mengecek kesehatan Edelweiss Anda?
+                {{ __('landing.cta.title') }}
             </h2>
             <p class="text-base sm:text-lg text-emerald-50 mb-8 max-w-2xl mx-auto">
-                Tidak perlu daftar atau bayar &mdash; coba langsung.
+                {!! __('landing.cta.subtitle') !!}
             </p>
             <div class="flex flex-col sm:flex-row gap-3 justify-center">
                 <a href="{{ route('guest.detection') }}"
                    class="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-lg bg-white text-emerald-700 font-semibold hover:bg-emerald-50 transition shadow-lg">
                     <x-icon name="scan" class="w-5 h-5" />
-                    Mulai Deteksi
+                    {{ __('landing.cta.primary') }}
                 </a>
                 <a href="{{ route('admin.register') }}"
                    class="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-lg bg-emerald-700/40 text-white font-semibold border-2 border-white/30 hover:bg-emerald-700/60 transition backdrop-blur">
-                    Daftar Akun
+                    {{ __('landing.cta.secondary') }}
                 </a>
             </div>
             <p class="mt-6 text-sm text-emerald-100">
-                Punya akun? Anda dapat menyimpan riwayat deteksi dan melihat statistik kesehatan tanaman.
+                {{ __('landing.cta.note') }}
             </p>
         </div>
     </section>

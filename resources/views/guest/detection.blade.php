@@ -8,7 +8,7 @@
                 Deteksi Kesehatan Bunga
             </h1>
             <p class="text-base text-slate-600 dark:text-slate-400">
-                Upload foto atau gunakan kamera untuk mendeteksi kesehatan bunga Edelweiss Jawa.
+                {{ __('detection.subtitle') }}
             </p>
         </div>
 
@@ -19,7 +19,7 @@
                         : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'"
                     class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition">
                 <x-icon name="upload" class="w-4 h-4" />
-                Upload Gambar
+                {{ __('detection.mode.upload') }}
             </button>
             <button @click="mode = 'camera'"
                     :class="mode === 'camera'
@@ -38,9 +38,9 @@
                 {{-- UPLOAD MODE --}}
                 <div x-show="mode === 'upload'" x-transition>
                     <div class="p-5 border-b border-slate-200 dark:border-slate-800">
-                        <h3 class="font-semibold text-slate-900 dark:text-white mb-1">Upload Gambar</h3>
+                        <h3 class="font-semibold text-slate-900 dark:text-white mb-1">{{ __('detection.mode.upload') }}</h3>
                         <p class="text-sm text-slate-500 dark:text-slate-400">
-                            Pilih foto bunga Edelweiss yang ingin dicek kesehatannya (.jpg, .png, .webp &middot; maks 10MB)
+                            {!! __('detection.upload.caption') !!}
                         </p>
                     </div>
 
@@ -76,7 +76,7 @@
                             <label for="fileInput"
                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-medium hover:bg-slate-200 dark:hover:bg-slate-700 cursor-pointer transition shrink-0">
                                 <x-icon name="upload" class="w-3.5 h-3.5" />
-                                Ganti Gambar
+                                {{ __('detection.upload.change_image') }}
                             </label>
                         </div>
 
@@ -124,7 +124,7 @@
                             <template x-if="!isLoading">
                                 <span class="inline-flex items-center gap-2">
                                     <x-icon name="scan" class="w-4 h-4" />
-                                    Deteksi Sekarang
+                                    {{ __('detection.upload.detect_button') }}
                                 </span>
                             </template>
                             <template x-if="isLoading">
@@ -157,7 +157,7 @@
                             <div x-show="!cameraActive" x-cloak
                                  class="absolute inset-0 flex flex-col items-center justify-center text-slate-500">
                                 <x-icon name="camera" class="w-12 h-12 mb-2 opacity-50" />
-                                <p class="text-sm">Kamera belum aktif</p>
+                                <p class="text-sm">{{ __('detection.camera.inactive') }}</p>
                             </div>
 
                             <div x-show="cameraActive" x-cloak
@@ -180,19 +180,13 @@
                                     @click="toggleFullscreen()"
                                     type="button"
                                     class="camera-fullscreen-toggle"
-                                    :title="isFullscreen ? 'Keluar Layar Penuh (Esc)' : 'Layar Penuh'"
-                                    :aria-label="isFullscreen ? 'Keluar Layar Penuh' : 'Layar Penuh'">
+                                    :title="isFullscreen ? __('detection.camera.exit_fullscreen') : __('detection.camera.enter_fullscreen')"
+                                    :aria-label="isFullscreen ? __('detection.camera.exit_fullscreen') : __('detection.camera.enter_fullscreen')">
                                 <svg x-show="!isFullscreen" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 4H4v6M4 4l6 6" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 4h6v6M20 4l-6 6" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 20H4v-6M4 20l6-6" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 20h6v-6M20 20l-6-6" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
                                 </svg>
                                 <svg x-show="isFullscreen" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 4l5 5m0 0H5m4 0V5" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M20 4l-5 5m0 0h4m-4 0V5" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 20l5-5m0 0H5m4 0v4" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M20 20l-5-5m0 0h4m-4 0v4" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 9V5m0 0H5m4 0L4 4m11 5h4m0 0V5m0 4l5-5M9 15v4m0 0H5m4 0l-5 5m11-5h4m0 0v4m0-4l5 5"/>
                                 </svg>
                             </button>
 
@@ -217,7 +211,7 @@
                                     <template x-if="!isCapturing">
                                         <span class="inline-flex items-center gap-2">
                                             <x-icon name="camera" class="w-4 h-4" />
-                                            Potret
+                                            {{ __('detection.camera.capture') }}
                                         </span>
                                     </template>
                                     <template x-if="isCapturing">
@@ -226,7 +220,7 @@
                                                 <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-opacity="0.25"/>
                                                 <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
                                             </svg>
-                                            Menyimpan...
+                                            {{ __('detection.camera.capturing') }}
                                         </span>
                                     </template>
                                 </button>
@@ -234,7 +228,7 @@
                                 <button @click="stopCamera()"
                                         type="button"
                                         class="rounded-full bg-rose-600 text-white font-medium hover:bg-rose-700 inline-flex items-center gap-2">
-                                    Stop Kamera
+                                    {{ __('detection.camera.stop') }}
                                 </button>
 
                                 <button @click="exitFullscreen()"
@@ -254,7 +248,7 @@
                                     class="px-5 py-2.5 rounded-lg bg-emerald-600 text-white font-medium hover:bg-emerald-700
                                            disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2">
                                 <x-icon name="camera" class="w-4 h-4" />
-                                Mulai Kamera
+                                {{ __('detection.camera.start') }}
                             </button>
 
                             <button @click="capturePhoto()"
@@ -298,7 +292,7 @@
 
             <aside class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
                 <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-800">
-                    <h3 class="font-semibold text-slate-900 dark:text-white">Hasil Deteksi</h3>
+                    <h3 class="font-semibold text-slate-900 dark:text-white">{{ __('detection.result.title') }}</h3>
                     <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                         <span x-text="results.length"></span> objek terdeteksi
                     </p>

@@ -1,5 +1,5 @@
-<x-layouts.app title="Laporan - Edelweiss Detection">
-    <x-slot:header>Laporan</x-slot:header>
+<x-layouts.app :title="__('reports.page_title')">
+    <x-slot:header>{{ __('reports.title') }}</x-slot:header>
 
     {{-- Inline script (must come BEFORE x-data) --}}
 <script>
@@ -165,39 +165,39 @@
               class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
                 <div>
-                    <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">Dari Tanggal</label>
+                    <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">{{ __('reports.filter.from_date') }}</label>
                     <input type="date" name="from" value="{{ $filters['from'] }}"
                            class="w-full px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">Sampai Tanggal</label>
+                    <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">{{ __('reports.filter.to_date') }}</label>
                     <input type="date" name="to" value="{{ $filters['to'] }}"
                            class="w-full px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">Kondisi</label>
+                    <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">{{ __('reports.filter.condition') }}</label>
                     <select name="condition"
                             class="w-full px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white">
-                        <option value="">Semua</option>
+                        <option value="">{{ __('reports.filter.all') }}</option>
                         <option value="Mekar" @selected($filters['condition'] === 'Mekar')>Mekar</option>
                         <option value="Sangat_Mekar" @selected($filters['condition'] === 'Sangat_Mekar')>Sangat Mekar</option>
                         <option value="Penyemaian" @selected($filters['condition'] === 'Penyemaian')>Penyemaian</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">Metode</label>
+                    <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">{{ __('reports.filter.method') }}</label>
                     <select name="source_method"
                             class="w-full px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white">
-                        <option value="all" @selected($filters['source_method'] === 'all')>Semua</option>
-                        <option value="upload" @selected($filters['source_method'] === 'upload')>Upload</option>
-                        <option value="camera" @selected($filters['source_method'] === 'camera')>Kamera</option>
+                        <option value="all" @selected($filters['source_method'] === 'all')>{{ __('reports.filter.all') }}</option>
+                        <option value="upload" @selected($filters['source_method'] === 'upload')>{{ __('reports.method.upload') }}</option>
+                        <option value="camera" @selected($filters['source_method'] === 'camera')>{{ __('reports.method.camera') }}</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">Sumber</label>
+                    <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">{{ __('reports.filter.source') }}</label>
                     <select name="user_source"
                             class="w-full px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white">
-                        <option value="all" @selected($filters['user_source'] === 'all')>Semua</option>
+                        <option value="all" @selected($filters['user_source'] === 'all')>{{ __('reports.filter.all') }}</option>
                         <option value="admin" @selected($filters['user_source'] === 'admin')>Admin/User</option>
                         <option value="guest" @selected($filters['user_source'] === 'guest')>Guest</option>
                     </select>
@@ -206,11 +206,11 @@
                     <button type="submit"
                             class="flex-1 px-4 py-2 rounded-lg bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 inline-flex items-center justify-center gap-2">
                         <x-icon name="filter" class="w-4 h-4" />
-                        Terapkan
+                        {{ __('reports.filter.apply') }}
                     </button>
                     <a href="{{ route('admin.reports') }}"
                        class="px-3 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-medium hover:bg-slate-200 dark:hover:bg-slate-700">
-                        Reset
+                        {{ __('reports.filter.reset') }}
                     </a>
                 </div>
             </div>
@@ -233,7 +233,7 @@
             {{-- Trend (lg:col-span-2) --}}
             <div class="lg:col-span-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
                 <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-800">
-                    <h3 class="font-semibold text-slate-900 dark:text-white">Trend Deteksi</h3>
+                    <h3 class="font-semibold text-slate-900 dark:text-white">{{ __('reports.chart.trend_title') }}</h3>
                     <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                         {{ \Carbon\Carbon::parse($filters['from'])->format('d M Y') }} &mdash;
                         {{ \Carbon\Carbon::parse($filters['to'])->format('d M Y') }}
@@ -256,8 +256,8 @@
             {{-- Distribusi --}}
             <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
                 <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-800">
-                    <h3 class="font-semibold text-slate-900 dark:text-white">Distribusi Kondisi</h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Periode terpilih</p>
+                    <h3 class="font-semibold text-slate-900 dark:text-white">{{ __('reports.chart.distribution_title') }}</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{{ __('reports.chart.distribution_subtitle') }}</p>
                 </div>
                 <div class="p-5">
                     @php $totalByClass = array_sum($byClass ?? []); @endphp
@@ -287,16 +287,16 @@
                     <a href="{{ route('admin.reports.export.pdf', request()->query()) }}"
                        download
                        class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-500/30 text-sm font-medium hover:bg-rose-100 dark:hover:bg-rose-500/20"
-                       title="Download laporan dalam format PDF">
+                       title="{{ __('reports.export.pdf_title') }}">
                         <x-icon name="download" class="w-4 h-4" />
-                        Export PDF
+                        {{ __('reports.export.pdf') }}
                     </a>
                     <a href="{{ route('admin.reports.export.excel', request()->query()) }}"
                        download
                        class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30 text-sm font-medium hover:bg-emerald-100 dark:hover:bg-emerald-500/20"
-                       title="Download laporan dalam format Excel">
+                       title="{{ __('reports.export.excel_title') }}">
                         <x-icon name="download" class="w-4 h-4" />
-                        Export Excel
+                        {{ __('reports.export.excel') }}
                     </a>
                 </div>
             </div>
@@ -313,8 +313,8 @@
                             <tr>
                                 <th class="px-5 py-3 font-medium">ID</th>
                                 <th class="px-5 py-3 font-medium">Tanggal</th>
-                                <th class="px-5 py-3 font-medium">Sumber</th>
-                                <th class="px-5 py-3 font-medium">Metode</th>
+                                <th class="px-5 py-3 font-medium">{{ __('reports.filter.source') }}</th>
+                                <th class="px-5 py-3 font-medium">{{ __('reports.filter.method') }}</th>
                                 <th class="px-5 py-3 font-medium">Kondisi Dominan</th>
                                 <th class="px-5 py-3 font-medium">Objek</th>
                                 <th class="px-5 py-3 font-medium">Avg Confidence</th>

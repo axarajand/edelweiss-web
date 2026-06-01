@@ -25,6 +25,25 @@
         }
     </script>
 
+
+    {{-- Inject translation keys untuk JS (toast/modal messages) --}}
+    <script>
+        window.lang = {
+            file_invalid: @json(__('detection.errors.file_invalid')),
+            file_too_big: @json(__('detection.errors.file_too_big')),
+            timeout: @json(__('detection.errors.timeout')),
+            network: @json(__('detection.errors.network')),
+            service_offline_title: @json(__('detection.errors.service_offline_title')),
+            service_offline_message: @json(__('detection.errors.service_offline_message')),
+            generic: @json(__('detection.errors.generic')),
+            camera_permission_denied: @json(__('detection.errors.camera_permission_denied')),
+            camera_not_found: @json(__('detection.errors.camera_not_found')),
+            camera_in_use: @json(__('detection.errors.camera_in_use')),
+            camera_generic: @json(__('detection.errors.camera_generic')),
+            understand: @json(__('messages.action.understand')),
+        };
+    </script>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -49,14 +68,17 @@
                     <a href="{{ route('home') }}"
                        class="px-3 py-2 rounded-lg text-sm font-medium transition
                               {{ request()->routeIs('home') ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white' }}">
-                        Beranda
+                        {{ __('messages.nav.home') }}
                     </a>
                     <a href="{{ route('guest.detection') }}"
                        class="px-3 py-2 rounded-lg text-sm font-medium transition
                               {{ request()->routeIs('guest.detection') ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white' }}">
-                        Deteksi
+                        {{ __('messages.nav.detection') }}
                     </a>
                 </nav>
+
+                {{-- Language switcher (ID / EN) --}}
+                <x-language-switcher />
 
                 <button @click="$store.theme.toggle()"
                         class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400"
@@ -73,16 +95,16 @@
                     <a href="{{ route('admin.dashboard') }}"
                        class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 transition">
                         <x-icon name="home" class="w-4 h-4" />
-                        <span class="hidden sm:inline">Dashboard</span>
+                        <span class="hidden sm:inline">{{ __('messages.nav.dashboard') }}</span>
                     </a>
                 @else
                     <a href="{{ route('admin.login') }}"
                        class="px-3 sm:px-4 py-2 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
-                        Login
+                        {{ __('messages.nav.login') }}
                     </a>
                     <a href="{{ route('admin.register') }}"
                        class="px-3 sm:px-4 py-2 rounded-lg bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 transition">
-                        Daftar
+                        {{ __('messages.nav.register') }}
                     </a>
                 @endauth
             </div>

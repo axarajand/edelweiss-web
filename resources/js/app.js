@@ -36,6 +36,14 @@ Alpine.plugin(collapse);
 
 // =========================================================================
 // PENTING: window.detectionPage HARUS didefinisikan SEBELUM Alpine.start()
+
+    /**
+     * Helper get translated string dari window.lang yang di-inject blade.
+     * Fallback ke text Indonesia default kalau key tidak ada.
+     */
+    function trans(key, fallback) {
+        return (window.lang && window.lang[key]) || fallback;
+    }
 // =========================================================================
 window.detectionPage = function () {
     return {
@@ -60,12 +68,12 @@ window.detectionPage = function () {
         _setFile(file) {
             if (!file) return;
             if (!file.type.startsWith('image/')) {
-                Alpine.store('toast').show('File harus berupa gambar (.jpg, .png, atau .webp)', 'warning');
+                Alpine.store('toast').show(trans('file_invalid', 'File harus berupa gambar (.jpg, .png, atau .webp)'), 'warning');
                 return;
             }
             const MAX_SIZE = 10 * 1024 * 1024;
             if (file.size > MAX_SIZE) {
-                Alpine.store('toast').show('Ukuran file terlalu besar. Maksimum 10MB.', 'warning');
+                Alpine.store('toast').show(trans('file_too_big', 'Ukuran file terlalu besar. Maksimum 10MB.'), 'warning');
                 return;
             }
             if (this.previewUrl) {
@@ -137,14 +145,14 @@ window.detectionPage = function () {
          */
         handleDetectionError(data) {
             const errorType = data.error_type || 'unknown';
-            const msg = data.message || 'Terjadi kesalahan saat mendeteksi.';
+            const msg = data.message || trans('generic', 'Terjadi kesalahan saat mendeteksi.');
 
             // Modal untuk error FATAL yang perlu attention user
             if (errorType === 'service_offline') {
                 Alpine.store('confirm').show({
-                    title: 'Service Deteksi Belum Tersedia',
-                    message: 'Sistem belum dapat terhubung ke service deteksi saat ini. Silakan coba beberapa saat lagi, atau hubungi admin jika masalah berlanjut.',
-                    confirmText: 'Mengerti',
+                    title: trans('service_offline_title', 'Service Deteksi Belum Tersedia'),
+                    message: trans('service_offline_message', 'Sistem belum dapat terhubung ke service deteksi saat ini. Silakan coba beberapa saat lagi, atau hubungi admin jika masalah berlanjut.'),
+                    confirmText: trans('understand', 'Mengerti'),
                     cancelText: '',
                     variant: 'default',
                     onConfirm: () => {},
@@ -155,7 +163,7 @@ window.detectionPage = function () {
             // Toast untuk error retry-able (timeout, network, dll)
             if (errorType === 'timeout') {
                 Alpine.store('toast').show(
-                    'Proses deteksi lebih lama dari biasanya. Coba lagi dengan gambar resolusi lebih kecil.',
+                    trans('timeout', 'Proses deteksi lebih lama dari biasanya. Coba lagi dengan gambar resolusi lebih kecil.'),
                     'warning',
                     7000
                 );
@@ -164,7 +172,7 @@ window.detectionPage = function () {
 
             if (errorType === 'network') {
                 Alpine.store('toast').show(
-                    'Koneksi terputus. Periksa jaringan Anda lalu coba lagi.',
+                    trans('network', 'Koneksi terputus. Periksa jaringan Anda lalu coba lagi.'),
                     'error',
                     6000
                 );
@@ -290,13 +298,13 @@ window.detectionPage = function () {
                 this.detectLoop();
             } catch (err) {
                 // Camera error - kasih pesan friendly berdasarkan error type
-                let msg = 'Tidak dapat mengakses kamera.';
+                let msg = trans('camera_generic', 'Tidak dapat mengakses kamera.');
                 if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
-                    msg = 'Izinkan akses kamera di browser, lalu coba lagi.';
+                    msg = trans('camera_permission_denied', 'Izinkan akses kamera di browser, lalu coba lagi.');
                 } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
-                    msg = 'Kamera tidak ditemukan pada perangkat ini.';
+                    msg = trans('camera_not_found', 'Kamera tidak ditemukan pada perangkat ini.');
                 } else if (err.name === 'NotReadableError' || err.name === 'TrackStartError') {
-                    msg = 'Kamera sedang digunakan oleh aplikasi lain.';
+                    msg = trans('camera_in_use', 'Kamera sedang digunakan oleh aplikasi lain.');
                 }
                 Alpine.store('toast').show(msg, 'error');
             }

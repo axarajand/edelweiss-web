@@ -21,6 +21,25 @@
         [x-cloak] { display: none !important; }
     </style>
 
+
+    {{-- Inject translation keys untuk JS (toast/modal messages) --}}
+    <script>
+        window.lang = {
+            file_invalid: @json(__('detection.errors.file_invalid')),
+            file_too_big: @json(__('detection.errors.file_too_big')),
+            timeout: @json(__('detection.errors.timeout')),
+            network: @json(__('detection.errors.network')),
+            service_offline_title: @json(__('detection.errors.service_offline_title')),
+            service_offline_message: @json(__('detection.errors.service_offline_message')),
+            generic: @json(__('detection.errors.generic')),
+            camera_permission_denied: @json(__('detection.errors.camera_permission_denied')),
+            camera_not_found: @json(__('detection.errors.camera_not_found')),
+            camera_in_use: @json(__('detection.errors.camera_in_use')),
+            camera_generic: @json(__('detection.errors.camera_generic')),
+            understand: @json(__('messages.action.understand')),
+        };
+    </script>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 min-h-screen antialiased"
@@ -29,11 +48,11 @@
 
     @php
         $navItems = [
-            ['route' => 'admin.dashboard', 'label' => 'Dashboard', 'icon' => 'home'],
-            ['route' => 'admin.detection', 'label' => 'Deteksi', 'icon' => 'scan'],
-            ['route' => 'admin.history', 'label' => 'Riwayat', 'icon' => 'database'],
-            ['route' => 'admin.learning', 'label' => 'Belajar', 'icon' => 'book'],
-            ['route' => 'admin.reports', 'label' => 'Laporan', 'icon' => 'chart'],
+            ['route' => 'admin.dashboard', 'label' => __('messages.nav.dashboard'), 'icon' => 'home'],
+            ['route' => 'admin.detection', 'label' => __('messages.nav.detection'), 'icon' => 'scan'],
+            ['route' => 'admin.history', 'label' => __('messages.nav.history'), 'icon' => 'database'],
+            ['route' => 'admin.learning', 'label' => __('messages.nav.learning'), 'icon' => 'book'],
+            ['route' => 'admin.reports', 'label' => __('messages.nav.reports'), 'icon' => 'chart'],
         ];
         $user = auth()->user();
     @endphp
@@ -84,7 +103,7 @@
             <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-800">
                 @php $isUserMgmt = request()->routeIs('admin.users.*'); @endphp
                 <a href="{{ route('admin.users.index') }}"
-                   :title="!$store.sidebar.open ? 'Manajemen User' : ''"
+                   :title="!$store.sidebar.open ? '{{ __(\'messages.nav.users\') }}' : ''"
                    class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition
                           {{ $isUserMgmt
                               ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400'
@@ -201,12 +220,12 @@
                               'bg-rose-500': status === 'offline',
                               'bg-amber-400 animate-pulse': status === 'checking'
                           }"></span>
-                    <span x-text="status === 'online' ? 'ML Service' : status === 'offline' ? 'ML Offline' : 'Checking...'"></span>
+                    <span x-text="status === 'online' ? @json(__('messages.status.online')) + ' Service' : status === 'offline' ? @json(__('messages.status.offline')) + ' Service' : @json(__('messages.status.loading'))"></span>
 
                     {{-- Tooltip on hover --}}
                     <div class="absolute top-full right-0 mt-2 w-64 p-3 rounded-lg bg-slate-900 dark:bg-slate-700 text-white text-xs shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 pointer-events-none">
                         <div class="font-semibold mb-1.5">
-                            <span x-text="status === 'online' ? 'ML Service: Aktif' : status === 'offline' ? 'ML Service: Offline' : 'Memeriksa status...'"></span>
+                            <span x-text="status === 'online' ? 'ML Service: ' + @json(__('messages.status.active')) : status === 'offline' ? 'ML Service: ' + @json(__('messages.status.offline')) : @json(__('messages.status.checking_status'))"></span>
                         </div>
                         <div class="space-y-1 text-slate-300">
                             <div class="flex justify-between gap-2">
@@ -224,6 +243,9 @@
                         </div>
                     </div>
                 </div>
+
+                {{-- Language switcher (ID / EN) --}}
+                <x-language-switcher />
 
                 {{-- Desktop: nama user di topbar --}}
                 <div class="hidden xl:flex items-center gap-2 pl-2 border-l border-slate-200 dark:border-slate-700">
@@ -259,7 +281,7 @@
                         <a href="{{ route('admin.users.index') }}"
                            class="flex items-center gap-2 px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700">
                             <x-icon name="users" class="w-4 h-4" />
-                            Manajemen User
+                            {{ __('messages.nav.users') }}
                         </a>
                         <a href="{{ route('admin.settings') }}"
                            class="flex items-center gap-2 px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700">
@@ -374,45 +396,20 @@
     <script>
         (function () {
             const bar = document.getElementById('page-loader-bar');
-            let safetyTimeout = null;
 
             function start() {
                 bar.classList.add('active');
                 bar.style.width = '30%';
                 setTimeout(() => { if (bar.classList.contains('active')) bar.style.width = '70%'; }, 300);
                 setTimeout(() => { if (bar.classList.contains('active')) bar.style.width = '85%'; }, 800);
-
-                // Safety net: auto-finish setelah 10 detik kalau event 'load' tidak fire
-                // (mis. kalau link tidak dikenali sebagai download tapi browser download file)
-                if (safetyTimeout) clearTimeout(safetyTimeout);
-                safetyTimeout = setTimeout(() => {
-                    if (bar.classList.contains('active')) done();
-                }, 10000);
             }
 
             function done() {
-                if (safetyTimeout) {
-                    clearTimeout(safetyTimeout);
-                    safetyTimeout = null;
-                }
                 bar.style.width = '100%';
                 setTimeout(() => {
                     bar.classList.remove('active');
                     bar.style.width = '0%';
                 }, 200);
-            }
-
-            /**
-             * Deteksi apakah URL kemungkinan download file (bukan navigasi halaman).
-             * Kalau ya, page loader tidak boleh start karena event 'load' tidak akan fire.
-             */
-            function isDownloadUrl(href) {
-                if (!href) return false;
-                // Path mengandung /export/ atau /download/
-                if (/\/export\//.test(href) || /\/download\//.test(href)) return true;
-                // Extension file umum
-                if (/\.(pdf|xlsx|xls|csv|zip|docx|pptx|jpg|jpeg|png)(\?|$)/i.test(href)) return true;
-                return false;
             }
 
             // Trigger saat navigasi atau form submit
@@ -423,17 +420,14 @@
                 if (!href || href.startsWith('#') || href.startsWith('javascript:')) return;
                 if (link.target === '_blank') return;
                 if (link.hasAttribute('download')) return;
+                // Skip same-page anchor
                 if (link.host !== window.location.host) return;
-                // Skip link download (PDF, Excel, dll) - browser download file, tidak navigate
-                if (isDownloadUrl(href)) return;
                 start();
             });
 
             document.addEventListener('submit', (e) => {
                 if (e.target.tagName === 'FORM') {
-                    // Skip kalau action form mengarah ke download endpoint
-                    const action = e.target.getAttribute('action') || '';
-                    if (isDownloadUrl(action)) return;
+                    // Skip kalau form GET dengan target sama (filter)
                     start();
                 }
             });

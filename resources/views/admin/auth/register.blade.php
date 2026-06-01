@@ -1,4 +1,4 @@
-<x-layouts.auth title="Daftar Admin - Edelweiss Detection">
+<x-layouts.auth :title="__('auth.register.title') . ' - ' . __('messages.brand_name')">
 
     <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-1">Daftar Akun Baru</h2>
     <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">
@@ -11,12 +11,12 @@
         {{-- Name --}}
         <div>
             <label for="name" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
-                Nama Lengkap
+                {{ __('auth.register.name_label') }}
             </label>
             <input id="name" name="name" type="text" value="{{ old('name') }}" required autofocus
                    class="w-full px-4 py-2.5 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent
                           @error('name') border-rose-500 @enderror"
-                   placeholder="Nama Anda">
+                   placeholder="John Doe">
             @error('name')
                 <p class="mt-1 text-xs text-rose-600 dark:text-rose-400">{{ $message }}</p>
             @enderror
@@ -25,7 +25,7 @@
         {{-- Email --}}
         <div>
             <label for="email" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
-                Email
+                {{ __('auth.register.email_label') }}
             </label>
             <input id="email" name="email" type="email" value="{{ old('email') }}" required
                    class="w-full px-4 py-2.5 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent
@@ -39,7 +39,7 @@
         {{-- Password --}}
         <div>
             <label for="password" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
-                Password
+                {{ __('auth.register.password_label') }}
             </label>
             <input id="password" name="password" type="password" required
                    class="w-full px-4 py-2.5 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent
@@ -53,7 +53,7 @@
         {{-- Confirm password --}}
         <div>
             <label for="password_confirmation" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
-                Konfirmasi Password
+                {{ __('auth.register.password_confirm_label') }}
             </label>
             <input id="password_confirmation" name="password_confirmation" type="password" required
                    class="w-full px-4 py-2.5 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
@@ -68,16 +68,16 @@
         {{-- Submit --}}
         <button type="submit"
                 class="w-full px-4 py-2.5 rounded-lg bg-emerald-600 text-white font-medium text-sm hover:bg-emerald-700 transition focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900">
-            Daftar
+            {{ __('auth.register.submit') }}
         </button>
     </form>
 
     {{-- Login link --}}
     <div class="mt-6 pt-6 border-t border-slate-200 dark:border-slate-800 text-center">
         <p class="text-sm text-slate-500 dark:text-slate-400">
-            Sudah punya akun?
+            {{ __('auth.register.has_account') }}
             <a href="{{ route('admin.login') }}" class="text-emerald-600 dark:text-emerald-400 font-medium hover:underline">
-                Login di sini
+                {{ __('auth.register.login_link') }}
             </a>
         </p>
     </div>
