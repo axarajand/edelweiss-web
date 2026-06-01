@@ -16,6 +16,12 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin.auth' => \App\Http\Middleware\AdminAuth::class,
         ]);
 
+        // Append SetLocale middleware ke web group
+        // (auto set app locale dari session di setiap request)
+        $middleware->web(append: [
+            \App\Http\Middleware\SetLocale::class,
+        ]);
+
         // Redirect unauthenticated user ke /admin/login
         $middleware->redirectGuestsTo(fn () => route('admin.login'));
     })

@@ -5,7 +5,8 @@
     Pakai:
         <x-label-dot fase="Mekar" :count="3" />
     
-    Tooltip otomatis muncul saat hover, isinya: "Mekar: 3 objek"
+    Tooltip pakai Alpine.js custom - muncul cepat saat hover, ber-style.
+    Tooltip isi: nama kondisi + jumlah objek
     
     Internal label HARUS match dengan dataset YOLO/MLP class names:
     - Mekar, Penyemaian, Sangat_Mekar (3 label aktif sekarang)
@@ -14,8 +15,8 @@
 @props(['fase', 'count' => 1])
 
 @php
-    // Display name untuk tooltip (ganti underscore dengan space)
-    $displayName = str_replace('_', ' ', $fase);
+    // Display name untuk tooltip - pakai lang translation
+    $displayName = __('messages.kondisi.' . $fase);
 
     // Config warna per label - HARUS konsisten dengan fase-badge.blade.php
     $config = [
@@ -32,12 +33,39 @@
     ];
 
     $dotColor = $config[$fase] ?? 'bg-slate-400';
-    $tooltip = $displayName . ': ' . $count . ' objek';
+    $tooltipText = $displayName . ' · ' . $count . ' ' . __('messages.label.object');
 @endphp
 
-<span class="inline-flex items-center gap-1 text-xs font-medium text-slate-700 dark:text-slate-300 cursor-default"
-      title="{{ $tooltip }}"
-      aria-label="{{ $tooltip }}">
-    <span class="w-2 h-2 rounded-full {{ $dotColor }}"></span>
+<span x-data="{ showTooltip: false }"
+      @mouseenter="showTooltip = true"
+      @mouseleave="showTooltip = false"
+      @touchstart="showTooltip = true"
+      @touchend="setTimeout(() => showTooltip = false, 2000)"
+      class="relative inline-flex items-center gap-1 text-xs font-medium text-slate-700 dark:text-slate-300 cursor-default">
+
+    <span class="w-2.5 h-2.5 rounded-full {{ $dotColor }} shrink-0"></span>
     <span>{{ $count }}</span>
+
+    {{-- Custom tooltip Alpine --}}
+    <span x-show="showTooltip"
+          x-cloak
+          x-transition:enter="transition ease-out duration-100"
+          x-transition:enter-start="opacity-0 translate-y-1"
+          x-transition:enter-end="opacity-100 translate-y-0"
+          x-transition:leave="transition ease-in duration-75"
+          x-transition:leave-start="opacity-100"
+          x-transition:leave-end="opacity-0"
+          class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5
+                 px-2.5 py-1 rounded-md
+                 bg-slate-900 dark:bg-slate-700 text-white text-xs font-medium
+                 whitespace-nowrap shadow-lg
+                 pointer-events-none z-50">
+        {{ $tooltipText }}
+        {{-- Arrow tooltip --}}
+        <span class="absolute top-full left-1/2 -translate-x-1/2 -mt-px
+                     w-0 h-0
+                     border-l-4 border-r-4 border-t-4
+                     border-l-transparent border-r-transparent
+                     border-t-slate-900 dark:border-t-slate-700"></span>
+    </span>
 </span>

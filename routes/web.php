@@ -3,7 +3,6 @@
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\RegisterController;
 use App\Http\Controllers\Admin\SettingsController;
-use App\Http\Controllers\Admin\ReportExportController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\DetectionController;
 use App\Http\Controllers\GuestController;
@@ -18,6 +17,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [GuestController::class, 'landing'])->name('home');
 Route::get('/deteksi', [GuestController::class, 'detection'])->name('guest.detection');
 Route::post('/detect', [DetectionController::class, 'detect'])->name('detect');
+
+/*
+|--------------------------------------------------------------------------
+| LOCALE switcher (publik, semua user bisa switch bahasa)
+|--------------------------------------------------------------------------
+*/
+Route::post('/locale/{lang}', [\App\Http\Controllers\LocaleController::class, 'switch'])
+    ->name('locale.switch');
 
 /*
 |--------------------------------------------------------------------------
@@ -42,8 +49,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('deteksi', [PageController::class, 'detection'])->name('detection');
         Route::get('pembelajaran', [PageController::class, 'learning'])->name('learning');
         Route::get('laporan', [PageController::class, 'reports'])->name('reports');
-        Route::get('laporan/export/pdf', [ReportExportController::class, 'exportPdf'])->name('reports.export.pdf');
-        Route::get('laporan/export/excel', [ReportExportController::class, 'exportExcel'])->name('reports.export.excel');
+        Route::get('laporan/export/pdf', [PageController::class, 'reportsExportPdf'])->name('reports.export.pdf');
+        Route::get('laporan/export/excel', [PageController::class, 'reportsExportExcel'])->name('reports.export.excel');
 
         // === Riwayat Deteksi (sebelumnya /admin/dataset) ===
         Route::get('riwayat', [PageController::class, 'history'])->name('history');
