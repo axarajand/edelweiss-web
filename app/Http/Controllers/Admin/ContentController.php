@@ -27,6 +27,22 @@ class ContentController extends Controller
         return view('pages.content', compact('tab', 'researchers', 'partners', 'galleries'));
     }
 
+    /**
+     * Redirect kembali ke halaman konten pada tab yang sama.
+     * Tab dibaca dari input form (hidden field `tab`), fallback ke query/refferer.
+     */
+    private function backToTab(string $default, string $message)
+    {
+        $tab = request()->input('tab', $default);
+        $allowed = ['research', 'partners', 'gallery'];
+        if (!in_array($tab, $allowed, true)) {
+            $tab = $default;
+        }
+        return redirect()
+            ->route('admin.content.index', ['tab' => $tab])
+            ->with('success', $message);
+    }
+
     // ================================================================
     // RESEARCHER CRUD (Tim Peneliti)
     // ================================================================
@@ -52,7 +68,7 @@ class ContentController extends Controller
 
         Researcher::create($data);
 
-        return back()->with('success', 'Peneliti berhasil ditambahkan.');
+        return $this->backToTab('research', 'Peneliti berhasil ditambahkan.');
     }
 
     public function updateResearcher(Request $request, Researcher $researcher)
@@ -77,7 +93,7 @@ class ContentController extends Controller
         $data['is_active'] = $request->boolean('is_active', true);
         $researcher->update($data);
 
-        return back()->with('success', 'Peneliti berhasil diperbarui.');
+        return $this->backToTab('research', 'Peneliti berhasil diperbarui.');
     }
 
     public function destroyResearcher(Researcher $researcher)
@@ -86,7 +102,7 @@ class ContentController extends Controller
             Storage::disk('public')->delete($researcher->photo_path);
         }
         $researcher->delete();
-        return back()->with('success', 'Peneliti berhasil dihapus.');
+        return $this->backToTab('research', 'Peneliti berhasil dihapus.');
     }
 
     /**
@@ -147,7 +163,7 @@ class ContentController extends Controller
 
         Partner::create($data);
 
-        return back()->with('success', 'Partner berhasil ditambahkan.');
+        return $this->backToTab('partners', 'Partner berhasil ditambahkan.');
     }
 
     public function updatePartner(Request $request, Partner $partner)
@@ -173,7 +189,7 @@ class ContentController extends Controller
         $data['is_active'] = $request->boolean('is_active', true);
         $partner->update($data);
 
-        return back()->with('success', 'Partner berhasil diperbarui.');
+        return $this->backToTab('partners', 'Partner berhasil diperbarui.');
     }
 
     public function destroyPartner(Partner $partner)
@@ -182,7 +198,7 @@ class ContentController extends Controller
             Storage::disk('public')->delete($partner->logo_path);
         }
         $partner->delete();
-        return back()->with('success', 'Partner berhasil dihapus.');
+        return $this->backToTab('partners', 'Partner berhasil dihapus.');
     }
 
     private function storePartnerLogo($file): string
@@ -238,7 +254,7 @@ class ContentController extends Controller
 
         Gallery::create($data);
 
-        return back()->with('success', 'Foto galeri berhasil ditambahkan.');
+        return $this->backToTab('gallery', 'Foto galeri berhasil ditambahkan.');
     }
 
     public function updateGallery(Request $request, Gallery $gallery)
@@ -265,7 +281,7 @@ class ContentController extends Controller
         $data['is_published'] = $request->boolean('is_published', true);
         $gallery->update($data);
 
-        return back()->with('success', 'Foto galeri berhasil diperbarui.');
+        return $this->backToTab('gallery', 'Foto galeri berhasil diperbarui.');
     }
 
     public function destroyGallery(Gallery $gallery)
@@ -274,7 +290,7 @@ class ContentController extends Controller
             Storage::disk('public')->delete($gallery->image_path);
         }
         $gallery->delete();
-        return back()->with('success', 'Foto galeri berhasil dihapus.');
+        return $this->backToTab('gallery', 'Foto galeri berhasil dihapus.');
     }
 
     /**

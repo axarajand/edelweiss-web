@@ -63,13 +63,16 @@
                                         class="p-1.5 rounded-md text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 transition" title="{{ __('messages.action.edit') }}">
                                     <x-icon name="edit" class="w-4 h-4" />
                                 </button>
-                                <form method="POST" action="{{ route('admin.content.researcher.destroy', $person) }}"
-                                      onsubmit="return confirm('{{ __('content.research.confirm_delete') }}')" class="inline">
-                                    @csrf @method('DELETE')
-                                    <button type="submit" class="p-1.5 rounded-md text-slate-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition" title="{{ __('messages.action.delete') }}">
+                                <div x-data="contentDelete({ url: '{{ route('admin.content.researcher.destroy', $person) }}', name: @js($person->name), tab: 'research', message: @js(__('content.research.confirm_delete')) })" class="inline">
+                                    <button type="button" @click="confirmDelete()"
+                                            class="p-1.5 rounded-md text-slate-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition" title="{{ __('messages.action.delete') }}">
                                         <x-icon name="trash" class="w-4 h-4" />
                                     </button>
-                                </form>
+                                    <form x-ref="deleteForm" method="POST" action="{{ route('admin.content.researcher.destroy', $person) }}" class="hidden">
+                                        @csrf @method('DELETE')
+                                        <input type="hidden" name="tab" value="research">
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     @endforeach
@@ -124,13 +127,16 @@
                                         class="p-1.5 rounded-md text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 transition">
                                     <x-icon name="edit" class="w-4 h-4" />
                                 </button>
-                                <form method="POST" action="{{ route('admin.content.partner.destroy', $p) }}"
-                                      onsubmit="return confirm('{{ __('content.partners.confirm_delete') }}')" class="inline">
-                                    @csrf @method('DELETE')
-                                    <button type="submit" class="p-1.5 rounded-md text-slate-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition">
+                                <div x-data="contentDelete({ url: '{{ route('admin.content.partner.destroy', $p) }}', name: @js($p->name), tab: 'partners', message: @js(__('content.partners.confirm_delete')) })" class="inline">
+                                    <button type="button" @click="confirmDelete()"
+                                            class="p-1.5 rounded-md text-slate-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition">
                                         <x-icon name="trash" class="w-4 h-4" />
                                     </button>
-                                </form>
+                                    <form x-ref="deleteForm" method="POST" action="{{ route('admin.content.partner.destroy', $p) }}" class="hidden">
+                                        @csrf @method('DELETE')
+                                        <input type="hidden" name="tab" value="partners">
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     @endforeach
@@ -170,13 +176,16 @@
                                             class="p-1.5 rounded-md text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 transition">
                                         <x-icon name="edit" class="w-4 h-4" />
                                     </button>
-                                    <form method="POST" action="{{ route('admin.content.gallery.destroy', $g) }}"
-                                          onsubmit="return confirm('{{ __('content.gallery.confirm_delete') }}')" class="inline">
-                                        @csrf @method('DELETE')
-                                        <button type="submit" class="p-1.5 rounded-md text-slate-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition">
+                                    <div x-data="contentDelete({ url: '{{ route('admin.content.gallery.destroy', $g) }}', name: @js($g->title), tab: 'gallery', message: @js(__('content.gallery.confirm_delete')) })" class="inline">
+                                        <button type="button" @click="confirmDelete()"
+                                                class="p-1.5 rounded-md text-slate-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition">
                                             <x-icon name="trash" class="w-4 h-4" />
                                         </button>
-                                    </form>
+                                        <form x-ref="deleteForm" method="POST" action="{{ route('admin.content.gallery.destroy', $g) }}" class="hidden">
+                                            @csrf @method('DELETE')
+                                            <input type="hidden" name="tab" value="gallery">
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -198,6 +207,7 @@
                 </div>
                 <form method="POST" :action="researcherForm.id ? `{{ url('admin/konten/peneliti') }}/${researcherForm.id}` : '{{ route('admin.content.researcher.store') }}'" enctype="multipart/form-data" class="p-5 space-y-4">
                     @csrf
+                    <input type="hidden" name="tab" value="research">
                     <template x-if="researcherForm.id"><input type="hidden" name="_method" value="PUT"></template>
 
                     <div>
@@ -258,6 +268,7 @@
                 </div>
                 <form method="POST" :action="partnerForm.id ? `{{ url('admin/konten/partner') }}/${partnerForm.id}` : '{{ route('admin.content.partner.store') }}'" enctype="multipart/form-data" class="p-5 space-y-4">
                     @csrf
+                    <input type="hidden" name="tab" value="partners">
                     <template x-if="partnerForm.id"><input type="hidden" name="_method" value="PUT"></template>
 
                     <div>
@@ -318,6 +329,7 @@
                 </div>
                 <form method="POST" :action="galleryForm.id ? `{{ url('admin/konten/galeri') }}/${galleryForm.id}` : '{{ route('admin.content.gallery.store') }}'" enctype="multipart/form-data" class="p-5 space-y-4">
                     @csrf
+                    <input type="hidden" name="tab" value="gallery">
                     <template x-if="galleryForm.id"><input type="hidden" name="_method" value="PUT"></template>
 
                     <div>
@@ -376,7 +388,7 @@
     <script>
         window.contentPage = function () {
             return {
-                tab: @json($tab),
+                tab: new URLSearchParams(window.location.search).get('tab') || @json($tab),
                 modal: null,
 
                 researcherForm: {},
@@ -406,6 +418,24 @@
                         is_published: !!data.is_published,
                     } : { category: 'field', is_published: true };
                     this.modal = 'gallery';
+                },
+            };
+        };
+
+        // Themed delete confirmation (pakai store global yang sama dengan halaman lain).
+        window.contentDelete = function ({ url, name, tab, message }) {
+            return {
+                confirmDelete() {
+                    Alpine.store('confirm').show({
+                        title: @json(__('messages.action.delete')) + '?',
+                        message: message,
+                        confirmText: @json(__('messages.action.delete')),
+                        cancelText: @json(__('messages.action.cancel')),
+                        variant: 'danger',
+                        onConfirm: () => {
+                            this.$refs.deleteForm.submit();
+                        }
+                    });
                 },
             };
         };
