@@ -2,6 +2,7 @@
 
 return [
     'title' => 'Health Detection',
+    'h1_guest' => 'Edelweiss Flower Health Detection',
     'page_title' => 'Health Detection - Edelweiss Detection',
     'subtitle' => 'Upload a photo or use the camera to detect Java Edelweiss flower health.',
 
@@ -17,12 +18,19 @@ return [
         'detect_button' => 'Detect Now',
         'detecting' => 'Detecting...',
         'change_image' => 'Change Image',
+        'click_to_select' => 'Click to select image',
+        'release_file' => 'Release file here',
+        'drag_drop_hint' => 'or drag & drop file here',
+        'release_to_change' => 'Release to change image',
+        'ai_analyzing' => 'AI is Analyzing...',
+        'processing' => 'Processing...',
     ],
 
     'camera' => [
         'start' => 'Start Camera',
         'stop' => 'Stop Camera',
         'capture' => 'Capture',
+        'capture_save' => 'Capture & Save',
         'capturing' => 'Saving...',
         'inactive' => 'Camera not active',
         'live' => 'LIVE',
@@ -31,6 +39,10 @@ return [
         'stopped' => 'Stopped',
         'enter_fullscreen' => 'Fullscreen',
         'exit_fullscreen' => 'Exit Fullscreen',
+        'realtime_title' => 'Real-time Camera',
+        'realtime_subtitle' => 'The Capture button will activate as soon as Edelweiss flowers are detected on the camera screen.',
+        'point_camera' => 'Point camera at Edelweiss flower...',
+        'stop_short' => 'Stop',
     ],
 
     'result' => [
@@ -41,6 +53,9 @@ return [
         'show_box' => 'Show Box',
         'hide_box' => 'Hide Box',
         'download_annotated' => 'Download',
+        'empty_title' => 'No results yet',
+        'empty_subtitle' => 'Upload an image or activate camera to start detecting.',
+        'conditions_title' => 'Edelweiss Health Conditions',
     ],
 
     'history_recent' => [
@@ -63,4 +78,12 @@ return [
         'camera_in_use' => 'Camera is being used by another application.',
         'camera_generic' => 'Cannot access camera.',
     ],
+
+    'conditions_mekar' => 'Blooming',
+    'conditions_sangat_mekar' => 'Full Bloom',
+    'conditions_penyemaian' => 'Seedling',
+
+    'guest_cta_title' => 'Want full feature access?',
+    'guest_cta_register' => 'Sign up',
+    'guest_cta_text' => 'to access the statistics dashboard, dataset management, and detection history.',
 ];

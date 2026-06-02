@@ -1,12 +1,12 @@
 {{-- 
-    Label dot compact - dot warna + angka count + tooltip hover.
-    Pakai untuk tampilkan breakdown label di card list (riwayat) supaya compact.
+    Label dot - dot warna + jumlah objek + nama label inline.
+    Format: 🔴 3 Mekar
+    
+    Tidak pakai tooltip lagi karena bisa kepotong card.
+    Nama label langsung tampil di badge supaya user tahu warna mana untuk apa.
     
     Pakai:
         <x-label-dot fase="Mekar" :count="3" />
-    
-    Tooltip pakai Alpine.js custom - muncul cepat saat hover, ber-style.
-    Tooltip isi: nama kondisi + jumlah objek
     
     Internal label HARUS match dengan dataset YOLO/MLP class names:
     - Mekar, Penyemaian, Sangat_Mekar (3 label aktif sekarang)
@@ -15,57 +15,28 @@
 @props(['fase', 'count' => 1])
 
 @php
-    // Display name untuk tooltip - pakai lang translation
+    // Display name lewat lang translation (Mekar -> Mekar/Blooming, dst)
     $displayName = __('messages.kondisi.' . $fase);
 
     // Config warna per label - HARUS konsisten dengan fase-badge.blade.php
     $config = [
         // === 3 label aktif ===
-        'Mekar' => 'bg-rose-500',
-        'Sangat_Mekar' => 'bg-pink-500',
-        'Penyemaian' => 'bg-emerald-500',
+        'Mekar' => ['dot' => 'bg-rose-500', 'bg' => 'bg-rose-50 dark:bg-rose-500/10', 'text' => 'text-rose-700 dark:text-rose-400'],
+        'Sangat_Mekar' => ['dot' => 'bg-pink-500', 'bg' => 'bg-pink-50 dark:bg-pink-500/10', 'text' => 'text-pink-700 dark:text-pink-400'],
+        'Penyemaian' => ['dot' => 'bg-emerald-500', 'bg' => 'bg-emerald-50 dark:bg-emerald-500/10', 'text' => 'text-emerald-700 dark:text-emerald-400'],
 
         // === 5 label (future expansion) ===
-        'Kuncup' => 'bg-lime-500',
-        'Pematangan_Biji' => 'bg-yellow-500',
-        'Biji_Matang' => 'bg-amber-700',
-        'Penyemaian_Baru' => 'bg-teal-500',
+        'Kuncup' => ['dot' => 'bg-lime-500', 'bg' => 'bg-lime-50 dark:bg-lime-500/10', 'text' => 'text-lime-700 dark:text-lime-400'],
+        'Pematangan_Biji' => ['dot' => 'bg-yellow-500', 'bg' => 'bg-yellow-50 dark:bg-yellow-500/10', 'text' => 'text-yellow-700 dark:text-yellow-400'],
+        'Biji_Matang' => ['dot' => 'bg-amber-700', 'bg' => 'bg-amber-50 dark:bg-amber-700/10', 'text' => 'text-amber-800 dark:text-amber-500'],
+        'Penyemaian_Baru' => ['dot' => 'bg-teal-500', 'bg' => 'bg-teal-50 dark:bg-teal-500/10', 'text' => 'text-teal-700 dark:text-teal-400'],
     ];
 
-    $dotColor = $config[$fase] ?? 'bg-slate-400';
-    $tooltipText = $displayName . ' · ' . $count . ' ' . __('messages.label.object');
+    $cfg = $config[$fase] ?? ['dot' => 'bg-slate-400', 'bg' => 'bg-slate-100 dark:bg-slate-800', 'text' => 'text-slate-700 dark:text-slate-300'];
 @endphp
 
-<span x-data="{ showTooltip: false }"
-      @mouseenter="showTooltip = true"
-      @mouseleave="showTooltip = false"
-      @touchstart="showTooltip = true"
-      @touchend="setTimeout(() => showTooltip = false, 2000)"
-      class="relative inline-flex items-center gap-1 text-xs font-medium text-slate-700 dark:text-slate-300 cursor-default">
-
-    <span class="w-2.5 h-2.5 rounded-full {{ $dotColor }} shrink-0"></span>
-    <span>{{ $count }}</span>
-
-    {{-- Custom tooltip Alpine --}}
-    <span x-show="showTooltip"
-          x-cloak
-          x-transition:enter="transition ease-out duration-100"
-          x-transition:enter-start="opacity-0 translate-y-1"
-          x-transition:enter-end="opacity-100 translate-y-0"
-          x-transition:leave="transition ease-in duration-75"
-          x-transition:leave-start="opacity-100"
-          x-transition:leave-end="opacity-0"
-          class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5
-                 px-2.5 py-1 rounded-md
-                 bg-slate-900 dark:bg-slate-700 text-white text-xs font-medium
-                 whitespace-nowrap shadow-lg
-                 pointer-events-none z-50">
-        {{ $tooltipText }}
-        {{-- Arrow tooltip --}}
-        <span class="absolute top-full left-1/2 -translate-x-1/2 -mt-px
-                     w-0 h-0
-                     border-l-4 border-r-4 border-t-4
-                     border-l-transparent border-r-transparent
-                     border-t-slate-900 dark:border-t-slate-700"></span>
-    </span>
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium {{ $cfg['bg'] }} {{ $cfg['text'] }}">
+    <span class="w-1.5 h-1.5 rounded-full {{ $cfg['dot'] }} shrink-0"></span>
+    <span class="font-semibold">{{ $count }}</span>
+    <span>{{ $displayName }}</span>
 </span>

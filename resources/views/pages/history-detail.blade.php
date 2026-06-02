@@ -1,5 +1,5 @@
-<x-layouts.app title="Detail Deteksi #{{ $detection->id }} - Edelweiss Detection">
-    <x-slot:header>Detail Deteksi #{{ $detection->id }}</x-slot:header>
+<x-layouts.app :title="__('history.detail_title') . ' #'{{ $detection->id }} - Edelweiss Detection">
+    <x-slot:header>{{ __('history.detail_title') }} #{{ $detection->id }}</x-slot:header>
 
     <div x-data="historyDetail()"
          x-init="init({{ json_encode($detection->result['detections'] ?? []) }})"
@@ -9,15 +9,15 @@
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <a href="{{ route('admin.history', ['tab' => 'riwayat']) }}"
                class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
-                ← Kembali ke Riwayat
+                ← {{ __('history.detail.back_to_list') }}
             </a>
 
-            {{-- Hapus Deteksi pakai modal confirm --}}
+            {{-- {{ __('history.detail.delete_detection') }} pakai modal confirm --}}
             <div x-data="detailDelete()">
                 <button type="button"
                         @click="confirmDelete()"
                         class="px-4 py-2 rounded-lg bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-500/30 text-sm font-medium hover:bg-rose-100 dark:hover:bg-rose-500/20">
-                    Hapus Deteksi
+                    {{ __('history.detail.delete_detection') }}
                 </button>
 
                 <form x-ref="deleteForm"
@@ -35,12 +35,12 @@
             {{-- Gambar + bbox --}}
             <div class="lg:col-span-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden">
                 <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
-                    <h3 class="font-semibold text-slate-900 dark:text-white">Hasil Deteksi</h3>
+                    <h3 class="font-semibold text-slate-900 dark:text-white">{{ __('detection.result.title') }}</h3>
                     <div class="flex gap-2">
                         <button @click="showBoxes = !showBoxes"
                                 :class="showBoxes ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400' : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400'"
                                 class="px-3 py-1.5 rounded-lg text-xs font-medium transition">
-                            <span x-text="showBoxes ? 'Sembunyikan Box' : 'Tampilkan Box'"></span>
+                            <span x-text="showBoxes ? '{{ __('history.detail.hide_box') }}' : '{{ __('history.detail.show_box') }}'"></span>
                         </button>
                         @if ($detection->image_path)
                             <button @click="downloadAnnotated()"
@@ -92,14 +92,14 @@
             <aside class="space-y-4">
 
                 <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5">
-                    <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Informasi</h3>
+                    <h3 class="font-semibold text-slate-900 dark:text-white mb-4">{{ __('history.detail.info_title') }}</h3>
                     <dl class="space-y-3 text-sm">
                         <div class="flex justify-between gap-3">
                             <dt class="text-slate-500 dark:text-slate-400">ID</dt>
                             <dd class="font-medium text-slate-900 dark:text-white">#{{ $detection->id }}</dd>
                         </div>
                         <div class="flex justify-between gap-3">
-                            <dt class="text-slate-500 dark:text-slate-400">Tanggal</dt>
+                            <dt class="text-slate-500 dark:text-slate-400">{{ __('history.detail.date') }}</dt>
                             <dd class="font-medium text-slate-900 dark:text-white text-right">
                                 {{ $detection->created_at->format('d M Y, H:i') }}
                             </dd>
@@ -158,7 +158,7 @@
 
                     @if (empty($detectionsList))
                         <p class="text-sm text-slate-500 dark:text-slate-400 py-4 text-center">
-                            Tidak ada objek terdeteksi.
+                            {{ __('history.detail.no_object_detected') }}.
                         </p>
                     @else
                         <div class="space-y-2">
@@ -364,7 +364,7 @@
             return {
                 confirmDelete() {
                     Alpine.store('confirm').show({
-                        title: 'Hapus Deteksi #{{ $detection->id }}?',
+                        title: '{{ __('history.detail.delete_detection') }} #{{ $detection->id }}?',
                         message: 'Deteksi beserta gambar terkait akan dihapus secara permanen. Tindakan ini tidak dapat dibatalkan.',
                         confirmText: 'Hapus',
                         cancelText: 'Batal',

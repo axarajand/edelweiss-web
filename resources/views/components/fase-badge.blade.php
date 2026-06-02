@@ -9,8 +9,8 @@
 @props(['fase'])
 
 @php
-    // Display name (untuk tampilkan ke user, ganti underscore dengan space)
-    $displayName = str_replace('_', ' ', $fase);
+    // Display name (untuk tampilkan ke user, pakai translation)
+    $displayName = __('messages.kondisi.' . $fase);
 
     // Config warna per label - support 3 aktif + 5 future
     $config = [

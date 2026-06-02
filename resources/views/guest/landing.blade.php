@@ -6,8 +6,8 @@
     <section class="relative min-h-[600px] lg:min-h-[700px] flex items-center overflow-hidden">
 
         <div class="absolute inset-0 z-0">
-            <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1920&q=80"
-                 alt="Pegunungan Indonesia"
+            <img src="{{ asset('images/hero-edelweiss.jpg') }}"
+                 alt="Padang Edelweiss Jawa di pegunungan"
                  class="w-full h-full object-cover">
             <div class="absolute inset-0 bg-gradient-to-r from-white/95 via-white/85 to-white/40 dark:from-slate-950/95 dark:via-slate-950/85 dark:to-slate-950/40"></div>
         </div>
@@ -173,6 +173,162 @@
             </div>
         </div>
     </section>
+
+    {{-- ============================================================
+         R&D PREVIEW SECTION (tim peneliti)
+         ============================================================ --}}
+    @if ($researchers->isNotEmpty())
+    <section class="py-16 lg:py-24 bg-slate-50 dark:bg-slate-900/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-2xl mx-auto text-center mb-12">
+                <p class="text-sm font-semibold text-emerald-600 dark:text-emerald-400 mb-2 uppercase tracking-wider">
+                    {{ __('landing.research.eyebrow') }}
+                </p>
+                <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-3">
+                    {{ __('landing.research.title') }}
+                </h2>
+                <p class="text-base text-slate-600 dark:text-slate-400">
+                    {{ __('landing.research.subtitle') }}
+                </p>
+            </div>
+
+            <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4">
+                @foreach ($researchers->take(6) as $person)
+                    <a href="{{ route('guest.research') }}" class="text-center group">
+                        @if ($person->photo_path)
+                            <img src="{{ asset('storage/' . $person->photo_path) }}"
+                                 alt="{{ $person->name }}"
+                                 loading="lazy"
+                                 class="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover mx-auto mb-3 ring-4 ring-white dark:ring-slate-800 shadow-sm group-hover:ring-emerald-100 dark:group-hover:ring-emerald-500/20 transition">
+                        @else
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full mx-auto mb-3 ring-4 ring-white dark:ring-slate-800 shadow-sm bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center text-white text-2xl font-bold group-hover:ring-emerald-100 dark:group-hover:ring-emerald-500/20 transition">
+                                {{ strtoupper(mb_substr($person->name, 0, 1)) }}
+                            </div>
+                        @endif
+                        <p class="text-xs font-medium text-slate-900 dark:text-white leading-tight line-clamp-2">{{ $person->name }}</p>
+                        @if ($person->role)
+                            <p class="text-[11px] text-emerald-600 dark:text-emerald-400 mt-0.5">{{ $person->role }}</p>
+                        @endif
+                    </a>
+                @endforeach
+            </div>
+
+            <div class="text-center mt-10">
+                <a href="{{ route('guest.research') }}"
+                   class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-500/10 transition">
+                    {{ __('landing.research.view_all') }}
+                    <x-icon name="arrow-right" class="w-4 h-4" />
+                </a>
+            </div>
+        </div>
+    </section>
+    @endif
+
+    {{-- ============================================================
+         GALLERY PREVIEW SECTION
+         ============================================================ --}}
+    @if ($galleries->isNotEmpty())
+    <section class="py-16 lg:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-2xl mx-auto text-center mb-12">
+                <p class="text-sm font-semibold text-emerald-600 dark:text-emerald-400 mb-2 uppercase tracking-wider">
+                    {{ __('landing.gallery.eyebrow') }}
+                </p>
+                <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-3">
+                    {{ __('landing.gallery.title') }}
+                </h2>
+                <p class="text-base text-slate-600 dark:text-slate-400">
+                    {{ __('landing.gallery.subtitle') }}
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+                @foreach ($galleries as $g)
+                    <div class="group relative aspect-[4/3] rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800">
+                        <img src="{{ asset('storage/' . $g->image_path) }}"
+                             alt="{{ $g->title }}"
+                             loading="lazy"
+                             class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition flex items-end p-3">
+                            <span class="text-white text-sm font-medium">{{ $g->title }}</span>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            <div class="text-center mt-10">
+                <a href="{{ route('guest.gallery') }}"
+                   class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-500/10 transition">
+                    {{ __('landing.gallery.view_all') }}
+                    <x-icon name="arrow-right" class="w-4 h-4" />
+                </a>
+            </div>
+        </div>
+    </section>
+    @endif
+
+    {{-- ============================================================
+         PARTNERS PREVIEW SECTION
+         ============================================================ --}}
+    <section class="py-16 lg:py-24 bg-slate-50 dark:bg-slate-900/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-2xl mx-auto text-center mb-12">
+                <p class="text-sm font-semibold text-emerald-600 dark:text-emerald-400 mb-2 uppercase tracking-wider">
+                    {{ __('landing.partners.eyebrow') }}
+                </p>
+                <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-3">
+                    {{ __('landing.partners.title') }}
+                </h2>
+                <p class="text-base text-slate-600 dark:text-slate-400">
+                    {{ __('landing.partners.subtitle') }}
+                </p>
+            </div>
+
+            @if ($partners->isNotEmpty())
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 items-center">
+                    @foreach ($partners as $p)
+                        <div class="flex flex-col items-center justify-center p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:shadow-md transition aspect-square">
+                            @if ($p->logo_path)
+                                <img src="{{ asset('storage/' . $p->logo_path) }}"
+                                     alt="{{ $p->name }}"
+                                     loading="lazy"
+                                     class="max-h-12 max-w-full object-contain mb-2">
+                            @else
+                                <div class="w-12 h-12 rounded-lg bg-emerald-100 dark:bg-emerald-500/15 flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-bold text-lg mb-2">
+                                    {{ strtoupper(substr($p->name, 0, 1)) }}
+                                </div>
+                            @endif
+                            <span class="text-xs text-center text-slate-600 dark:text-slate-400 leading-tight line-clamp-2">{{ $p->name }}</span>
+                        </div>
+                    @endforeach
+                </div>
+
+                <div class="text-center mt-10">
+                    <a href="{{ route('guest.partners') }}"
+                       class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-500/10 transition">
+                        {{ __('landing.partners.view_all') }}
+                        <x-icon name="arrow-right" class="w-4 h-4" />
+                    </a>
+                </div>
+            @else
+                {{-- Placeholder: tampil sampai partner diisi via admin panel --}}
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 items-center">
+                    @for ($i = 0; $i < 6; $i++)
+                        <div class="flex flex-col items-center justify-center p-4 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/40 aspect-square">
+                            <div class="w-12 h-12 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-300 dark:text-slate-600 mb-2">
+                                <x-icon name="handshake" class="w-6 h-6" />
+                            </div>
+                            <span class="text-xs text-center text-slate-400 dark:text-slate-500 leading-tight">{{ __('landing.partners.placeholder') }}</span>
+                        </div>
+                    @endfor
+                </div>
+                <p class="text-center text-sm text-slate-400 dark:text-slate-500 mt-8">
+                    {{ __('landing.partners.coming_soon') }}
+                </p>
+            @endif
+        </div>
+    </section>
+
 
     {{-- ============================================================
          CTA SECTION

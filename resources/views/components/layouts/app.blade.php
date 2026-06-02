@@ -40,6 +40,9 @@
             checking_status: @json(__('messages.status.checking_status')),
             ml_active: 'ML Service: ' + @json(__('messages.status.active')),
             ml_offline: 'ML Service: ' + @json(__('messages.status.offline')),
+            enter_fullscreen: @json(__('detection.camera.enter_fullscreen')),
+            exit_fullscreen: @json(__('detection.camera.exit_fullscreen')),
+            objects_detected: @json(__('detection.result.objects_detected')),
         };
     </script>
 
@@ -54,7 +57,7 @@
             ['route' => 'admin.dashboard', 'label' => __('messages.nav.dashboard'), 'icon' => 'home'],
             ['route' => 'admin.detection', 'label' => __('messages.nav.detection'), 'icon' => 'scan'],
             ['route' => 'admin.history', 'label' => __('messages.nav.history'), 'icon' => 'database'],
-            ['route' => 'admin.learning', 'label' => __('messages.nav.learning'), 'icon' => 'book'],
+            ['route' => 'admin.content.index', 'label' => __('messages.nav.content'), 'icon' => 'grid'],
             ['route' => 'admin.reports', 'label' => __('messages.nav.reports'), 'icon' => 'chart'],
         ];
         $user = auth()->user();
@@ -155,7 +158,7 @@
                     <a href="{{ route('admin.settings') }}"
                        class="flex items-center gap-2 px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700">
                         <x-icon name="settings" class="w-4 h-4" />
-                        Pengaturan
+                        {{ __('messages.nav.settings') }}
                     </a>
                     <form action="{{ route('admin.logout') }}" method="POST">
                         @csrf
@@ -289,7 +292,7 @@
                         <a href="{{ route('admin.settings') }}"
                            class="flex items-center gap-2 px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700">
                             <x-icon name="settings" class="w-4 h-4" />
-                            Pengaturan
+                            {{ __('messages.nav.settings') }}
                         </a>
                         <form action="{{ route('admin.logout') }}" method="POST">
                             @csrf

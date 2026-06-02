@@ -19,7 +19,7 @@
                         : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'"
                     class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition">
                 <x-icon name="camera" class="w-4 h-4" />
-                Kamera Real-time
+                {{ __('detection.mode.camera') }}
             </button>
         </div>
 
@@ -52,11 +52,11 @@
                                 <x-icon name="upload" class="w-6 h-6 text-slate-500 dark:text-slate-400" />
                             </div>
                             <p class="text-sm font-medium text-slate-900 dark:text-white">
-                                <span x-show="!isDragging">Klik untuk pilih gambar</span>
-                                <span x-show="isDragging" x-cloak>Lepaskan file di sini</span>
+                                <span x-show="!isDragging">{{ __('detection.upload.click_to_select') }}</span>
+                                <span x-show="isDragging" x-cloak>{{ __('detection.upload.release_file') }}</span>
                             </p>
                             <p class="text-xs text-slate-500 dark:text-slate-400 mt-1" x-show="!isDragging">
-                                atau drag &amp; drop file di sini
+                                {{ __('detection.upload.drag_drop_hint') }}
                             </p>
                         </label>
 
@@ -105,14 +105,14 @@
                                 {{-- Label di bawah --}}
                                 <div class="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-full bg-black/70 backdrop-blur text-emerald-400 text-xs font-medium flex items-center gap-2">
                                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                                    AI Sedang Menganalisis...
+                                    {{ __('detection.upload.ai_analyzing') }}
                                 </div>
                             </div>
 
                             <div x-show="isDragging" x-cloak
                                  class="absolute inset-0 bg-emerald-500/20 border-4 border-dashed border-emerald-500 backdrop-blur-sm flex flex-col items-center justify-center pointer-events-none">
                                 <x-icon name="upload" class="w-10 h-10 text-emerald-600 mb-2" />
-                                <p class="text-base font-medium text-emerald-900 dark:text-emerald-300">Lepaskan untuk ganti gambar</p>
+                                <p class="text-base font-medium text-emerald-900 dark:text-emerald-300">{{ __('detection.upload.release_to_change') }}</p>
                             </div>
                         </div>
 
@@ -132,7 +132,7 @@
                                         <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-opacity="0.25"/>
                                         <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
                                     </svg>
-                                    Memproses...
+                                    {{ __('detection.upload.processing') }}
                                 </span>
                             </template>
                         </button>
@@ -142,9 +142,9 @@
                 {{-- CAMERA MODE --}}
                 <div x-show="mode === 'camera'" x-cloak x-transition>
                     <div class="p-5 border-b border-slate-200 dark:border-slate-800">
-                        <h3 class="font-semibold text-slate-900 dark:text-white mb-1">Kamera Real-time</h3>
+                        <h3 class="font-semibold text-slate-900 dark:text-white mb-1">{{ __('detection.camera.realtime_title') }}</h3>
                         <p class="text-sm text-slate-500 dark:text-slate-400">
-                            Tombol <strong>Potret</strong> akan aktif begitu bunga Edelweiss terdeteksi di layar kamera.
+                            {!! __('detection.camera.realtime_subtitle') !!}
                         </p>
                     </div>
 
@@ -168,13 +168,13 @@
                             {{-- Badge "objek terdeteksi" — kanan atas saat kamera aktif (normal mode) --}}
                             <div x-show="cameraActive && results.length > 0 && !isFullscreen" x-cloak
                                  class="absolute top-3 right-12 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-600/90 text-white text-xs font-medium backdrop-blur">
-                                <span x-text="`${results.length} objek terdeteksi`"></span>
+                                <span x-text="results.length + ' ' + (window.lang?.objects_detected || 'objek terdeteksi')"></span>
                             </div>
 
                             {{-- Badge "objek terdeteksi" — saat fullscreen (top center) --}}
                             <div x-show="cameraActive && results.length > 0 && isFullscreen" x-cloak
                                  class="absolute top-4 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-600/90 text-white text-sm font-medium backdrop-blur">
-                                <span x-text="`${results.length} objek terdeteksi`"></span>
+                                <span x-text="results.length + ' ' + (window.lang?.objects_detected || 'objek terdeteksi')"></span>
                             </div>
 
                             {{-- Tombol toggle Fullscreen — pojok kanan atas, hanya muncul saat kamera aktif --}}
@@ -182,15 +182,21 @@
                                     @click="toggleFullscreen()"
                                     type="button"
                                     class="camera-fullscreen-toggle"
-                                    :title="isFullscreen ? __('detection.camera.exit_fullscreen') : __('detection.camera.enter_fullscreen')"
-                                    :aria-label="isFullscreen ? __('detection.camera.exit_fullscreen') : __('detection.camera.enter_fullscreen')">
+                                    :title="isFullscreen ? (window.lang?.exit_fullscreen || 'Exit Fullscreen') : (window.lang?.enter_fullscreen || 'Fullscreen')"
+                                    :aria-label="isFullscreen ? (window.lang?.exit_fullscreen || 'Exit Fullscreen') : (window.lang?.enter_fullscreen || 'Fullscreen')">
                                 {{-- Icon: enter fullscreen --}}
                                 <svg x-show="!isFullscreen" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 4H4v6M4 4l6 6" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 4h6v6M20 4l-6 6" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 20H4v-6M4 20l6-6" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 20h6v-6M20 20l-6-6" />
                                 </svg>
                                 {{-- Icon: exit fullscreen --}}
                                 <svg x-show="isFullscreen" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 9V5m0 0H5m4 0L4 4m11 5h4m0 0V5m0 4l5-5M9 15v4m0 0H5m4 0l-5 5m11-5h4m0 0v4m0-4l5 5"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 4l5 5m0 0H5m4 0V5" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M20 4l-5 5m0 0h4m-4 0V5" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 20l5-5m0 0H5m4 0v4" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M20 20l-5-5m0 0h4m-4 0v4" />
                                 </svg>
                             </button>
 
@@ -246,7 +252,7 @@
                                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 9V5m0 0H5m4 0L4 4m11 5h4m0 0V5m0 4l5-5M9 15v4m0 0H5m4 0l-5 5m11-5h4m0 0v4m0-4l5 5"/>
                                     </svg>
-                                    Keluar Layar Penuh
+                                    {{ __('detection.camera.exit_fullscreen') }}
                                 </button>
                             </div>
                         </div>
@@ -270,7 +276,7 @@
                                 <template x-if="!isCapturing">
                                     <span class="inline-flex items-center gap-2">
                                         <x-icon name="camera" class="w-4 h-4" />
-                                        Potret &amp; Simpan
+                                        {{ __('detection.camera.capture_save') }}
                                     </span>
                                 </template>
                                 <template x-if="isCapturing">
@@ -279,7 +285,7 @@
                                             <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-opacity="0.25"/>
                                             <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
                                         </svg>
-                                        Menyimpan...
+                                        {{ __('detection.camera.capturing') }}
                                     </span>
                                 </template>
                             </button>
@@ -287,13 +293,13 @@
                             {{-- Hint saat kamera aktif tapi belum ada deteksi --}}
                             <div x-show="cameraActive && results.length === 0" x-cloak
                                  class="px-4 py-2.5 text-sm text-slate-500 dark:text-slate-400 italic">
-                                Arahkan kamera ke bunga Edelweiss...
+                                {{ __('detection.camera.point_camera') }}
                             </div>
 
                             <button @click="stopCamera()" :disabled="!cameraActive"
                                     class="px-5 py-2.5 rounded-lg bg-rose-600 text-white font-medium hover:bg-rose-700
                                            disabled:opacity-50 disabled:cursor-not-allowed">
-                                Stop
+                                {{ __('detection.camera.stop_short') }}
                             </button>
                             <span class="ml-auto self-center text-sm text-slate-500 dark:text-slate-400" x-text="cameraStatus"></span>
                         </div>
@@ -306,7 +312,7 @@
                 <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-800">
                     <h3 class="font-semibold text-slate-900 dark:text-white">{{ __('detection.result.title') }}</h3>
                     <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                        <span x-text="results.length"></span> objek terdeteksi
+                        <span x-text="results.length"></span> <span x-text="window.lang?.objects_detected || 'objek terdeteksi'"></span>
                     </p>
                 </div>
 
@@ -316,9 +322,9 @@
                             <div class="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-3">
                                 <x-icon name="inbox" class="w-6 h-6 text-slate-400" />
                             </div>
-                            <p class="text-sm font-medium text-slate-700 dark:text-slate-300">Belum ada hasil</p>
+                            <p class="text-sm font-medium text-slate-700 dark:text-slate-300">{{ __('detection.result.empty_title') }}</p>
                             <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                                Upload gambar atau aktifkan kamera untuk mulai mendeteksi.
+                                {{ __('detection.result.empty_subtitle') }}
                             </p>
                         </div>
                     </template>
@@ -346,7 +352,7 @@
 
         {{-- Item 3: "Kondisi Kesehatan Edelweiss" --}}
         <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5">
-            <h4 class="text-sm font-semibold text-slate-900 dark:text-white mb-3">Kondisi Kesehatan Edelweiss</h4>
+            <h4 class="text-sm font-semibold text-slate-900 dark:text-white mb-3">{{ __('detection.result.conditions_title') }}</h4>
             <div class="flex flex-wrap gap-2">
                 <x-fase-badge fase="Mekar" />
                 <x-fase-badge fase="Sangat_Mekar" />

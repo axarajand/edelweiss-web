@@ -1,4 +1,4 @@
-<x-layouts.app title="Riwayat Deteksi - Edelweiss Detection">
+<x-layouts.app :title="__('history.title') . ' - ' . __('messages.brand_name')">
     <x-slot:header>{{ __('history.title') }}</x-slot:header>
 
     <div x-data="historyPage()" class="space-y-6">
@@ -17,7 +17,7 @@
 
         {{-- Stat cards: Total, Hari Ini, Dari Admin/User, Dari {{ __('messages.label.guest') }} --}}
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
-            <x-stat-card label="Total Riwayat" :value="$stats['total']" color="emerald" icon="flower" />
+            <x-stat-card :label="__('history.total_history')" :value="$stats['total']" color="emerald" icon="flower" />
             <x-stat-card label="Hari Ini" :value="$stats['today']" color="slate" />
             <x-stat-card label="Dari Admin/User" :value="$stats['admin']" color="slate" />
             <x-stat-card label="Dari Guest" :value="$stats['guest']" color="slate" />
@@ -42,7 +42,7 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">Kondisi</label>
+                    <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">{{ __('history.filter_condition') }}</label>
                     <select name="condition"
                             class="w-full px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white">
                         <option value="">Semua</option>
@@ -53,7 +53,7 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">Sumber</label>
+                    <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">{{ __('history.filter_source') }}</label>
                     <select name="user_source"
                             class="w-full px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white">
                         <option value="all" @selected($filters['user_source'] === 'all')>Semua</option>
@@ -167,7 +167,7 @@
                             <div class="relative aspect-square bg-slate-100 dark:bg-slate-800 overflow-hidden">
                                 @if ($d->image_path)
                                     <img src="{{ $d->image_url }}"
-                                         alt="Deteksi #{{ $d->id }}"
+                                         alt="{{ __('dashboard.detection_id_prefix') }} #{{ $d->id }}"
                                          loading="lazy"
                                          x-ref="img"
                                          @load="onImageLoad()"
@@ -216,7 +216,7 @@
                                     @if ($d->user)
                                         {{ $d->user->name }}
                                     @else
-                                        Pengunjung
+                                        {{ __('history.guest_badge') }}
                                     @endif
                                 </p>
                             </div>
@@ -269,7 +269,7 @@
 
                 <button @click="clearSelection()"
                         class="px-3 py-1.5 rounded-md bg-slate-700 hover:bg-slate-600 text-xs font-medium transition">
-                    Hapus Pilihan
+                    {{ __('history.history_delete_selected') }}
                 </button>
 
                 <div class="flex-1"></div>
@@ -333,10 +333,10 @@
 
                 confirmDelete(id) {
                     Alpine.store('confirm').show({
-                        title: `Hapus Deteksi #${id}?`,
-                        message: 'Deteksi beserta gambar terkait akan dihapus secara permanen. Tindakan ini tidak dapat dibatalkan.',
-                        confirmText: 'Hapus',
-                        cancelText: 'Batal',
+                        title: @json(__('history.confirm_single_title')).replace(':id', id),
+                        message: @json(__('history.confirm_single_msg')),
+                        confirmText: @json(__('messages.action.delete')),
+                        cancelText: @json(__('history.confirm_cancel_btn')),
                         variant: 'danger',
                         onConfirm: () => {
                             const form = document.getElementById(`delete-form-${id}`);
@@ -350,10 +350,10 @@
                     if (count === 0) return;
 
                     Alpine.store('confirm').show({
-                        title: `Hapus ${count} Deteksi?`,
-                        message: `${count} deteksi terpilih beserta gambarnya akan dihapus secara permanen. Tindakan ini tidak dapat dibatalkan.`,
-                        confirmText: 'Hapus Semua',
-                        cancelText: 'Batal',
+                        title: @json(__('history.confirm_multi_title')).replace(':count', count),
+                        message: @json(__('history.confirm_multi_msg')).replace(':count', count),
+                        confirmText: @json(__('history.confirm_delete_all_btn')),
+                        cancelText: @json(__('history.confirm_cancel_btn')),
                         variant: 'danger',
                         onConfirm: () => {
                             this.$refs.batchForm.submit();

@@ -1,5 +1,5 @@
-<x-layouts.app title="Pengaturan - Edelweiss Detection">
-    <x-slot:header>Pengaturan</x-slot:header>
+<x-layouts.app :title="__('settings.title') . ' - ' . __('messages.brand_name')">
+    <x-slot:header>{{ __('settings.title') }}</x-slot:header>
 
     @php $user = auth()->user(); @endphp
 

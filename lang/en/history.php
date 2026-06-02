@@ -50,4 +50,18 @@ return [
         'confirm' => 'Delete',
         'cancel' => 'Cancel',
     ],
+
+    'total_history' => 'Total History',
+    'history_delete_selected' => 'Delete Selected',
+    'confirm_single_title' => 'Delete Detection #:id?',
+    'confirm_single_msg' => 'Detection along with related image will be permanently deleted. This action cannot be undone.',
+    'confirm_multi_title' => 'Delete :count Detections?',
+    'filter_condition' => 'Condition',
+    'filter_source' => 'Source',
+
+    'guest_badge' => 'Guest',
+
+    'confirm_multi_msg' => ':count selected detections along with their images will be permanently deleted. This action cannot be undone.',
+    'confirm_delete_all_btn' => 'Delete All',
+    'confirm_cancel_btn' => 'Cancel',
 ];

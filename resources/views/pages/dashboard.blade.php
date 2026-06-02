@@ -37,7 +37,7 @@
                     <div>
                         <h3 class="font-semibold text-slate-900 dark:text-white">{{ __('dashboard.chart.trend_title') }}</h3>
                         <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5"
-                           x-text="`${trendPeriod} hari terakhir`"></p>
+                           x-text="(window.lang?.period_days_format || ':days hari terakhir').replace(':days', trendPeriod)"></p>
                     </div>
 
                     {{-- Period toggle --}}
@@ -45,17 +45,17 @@
                         <button @click="setTrendPeriod(7)"
                                 :class="trendPeriod === 7 ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm' : 'text-slate-600 dark:text-slate-400'"
                                 class="px-3 py-1 rounded-md text-xs font-medium transition">
-                            7 hari
+                            {{ __('dashboard.period_7d') }}
                         </button>
                         <button @click="setTrendPeriod(30)"
                                 :class="trendPeriod === 30 ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm' : 'text-slate-600 dark:text-slate-400'"
                                 class="px-3 py-1 rounded-md text-xs font-medium transition">
-                            30 hari
+                            {{ __('dashboard.period_30d') }}
                         </button>
                         <button @click="setTrendPeriod(90)"
                                 :class="trendPeriod === 90 ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm' : 'text-slate-600 dark:text-slate-400'"
                                 class="px-3 py-1 rounded-md text-xs font-medium transition">
-                            90 hari
+                            {{ __('dashboard.period_90d') }}
                         </button>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                 <div class="p-5">
                     @if (($totalDetections ?? 0) === 0)
                         <div class="h-64 flex items-center justify-center">
-                            <x-empty-state title="Belum ada data" message="Trend akan muncul setelah ada deteksi." icon="chart" />
+                            <x-empty-state :title="__('dashboard.no_data_title')" :message="__('dashboard.trend_empty')" icon="chart" />
                         </div>
                     @else
                         <div class="relative h-64">
@@ -77,14 +77,14 @@
             <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
                 <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-800">
                     <h3 class="font-semibold text-slate-900 dark:text-white">{{ __('dashboard.chart.distribution_title') }}</h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Semua deteksi</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{{ __('dashboard.all_detections') }}</p>
                 </div>
 
                 <div class="p-5">
                     @php $totalByClass = array_sum($byClass ?? []); @endphp
                     @if ($totalByClass === 0)
                         <div class="h-64 flex items-center justify-center">
-                            <x-empty-state title="Belum ada data" message="Grafik distribusi akan muncul setelah ada deteksi." icon="chart" />
+                            <x-empty-state :title="__('dashboard.no_data_title')" :message="__('dashboard.distribution_empty')" icon="chart" />
                         </div>
                     @else
                         <div class="relative h-64">
@@ -101,16 +101,16 @@
             {{-- Deteksi per Jam (bar) --}}
             <div class="lg:col-span-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
                 <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-800">
-                    <h3 class="font-semibold text-slate-900 dark:text-white">Aktivitas per Jam</h3>
+                    <h3 class="font-semibold text-slate-900 dark:text-white">{{ __('dashboard.activity_per_hour_title') }}</h3>
                     <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                        Pola deteksi sepanjang 24 jam
+                        {{ __('dashboard.activity_per_hour_subtitle') }}
                     </p>
                 </div>
 
                 <div class="p-5">
                     @if (($totalDetections ?? 0) === 0)
                         <div class="h-64 flex items-center justify-center">
-                            <x-empty-state title="Belum ada data" message="Grafik aktivitas akan muncul setelah ada deteksi." icon="chart" />
+                            <x-empty-state :title="__('dashboard.no_data_title')" :message="__('dashboard.activity_empty')" icon="chart" />
                         </div>
                     @else
                         <div class="relative h-64">
@@ -124,14 +124,14 @@
             <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
                 <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-800">
                     <h3 class="font-semibold text-slate-900 dark:text-white">{{ __('dashboard.chart.source_title') }}</h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Admin vs Pengunjung</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{{ __('dashboard.admin_vs_guest') }}</p>
                 </div>
 
                 <div class="p-5">
                     @php $totalSource = ($chartSource['admin'] ?? 0) + ($chartSource['guest'] ?? 0); @endphp
                     @if ($totalSource === 0)
                         <div class="h-64 flex items-center justify-center">
-                            <x-empty-state title="Belum ada data" message="Belum ada deteksi tercatat." icon="chart" />
+                            <x-empty-state :title="__('dashboard.no_data_title')" :message="__('dashboard.empty_subtitle_recent')" icon="chart" />
                         </div>
                     @else
                         <div class="relative h-64">
@@ -155,13 +155,13 @@
             @if (empty($recent) || count($recent) === 0)
                 <x-empty-state
                     title="Belum ada deteksi"
-                    message="Riwayat deteksi akan muncul di sini setelah Anda mulai mendeteksi."
+                    :message="__('dashboard.recent_empty')"
                     icon="inbox">
                     <x-slot:action>
                         <a href="{{ route('admin.detection') }}"
                            class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700">
                             <x-icon name="scan" class="w-4 h-4" />
-                            Mulai Deteksi Pertama
+                            {{ __('dashboard.start_first_detection') }}
                         </a>
                     </x-slot:action>
                 </x-empty-state>
@@ -173,7 +173,7 @@
 
                             <div class="w-12 h-12 rounded-lg overflow-hidden shrink-0 bg-slate-200 dark:bg-slate-800">
                                 @if ($r->image_path)
-                                    <img src="{{ $r->image_url }}" alt="Deteksi #{{ $r->id }}"
+                                    <img src="{{ $r->image_url }}" alt="{{ __('dashboard.detection_id_prefix') }} #{{ $r->id }}"
                                          loading="lazy" class="w-full h-full object-cover">
                                 @else
                                     <div class="w-full h-full flex items-center justify-center text-slate-400">
@@ -185,7 +185,7 @@
                             <div class="min-w-0 flex-1">
                                 <div class="flex items-center gap-2">
                                     <p class="text-sm font-medium text-slate-900 dark:text-white truncate">
-                                        Deteksi #{{ $r->id }}
+                                        {{ __('dashboard.detection_id_prefix') }} #{{ $r->id }}
                                     </p>
                                     @if ($r->dominant_label)
                                         <x-fase-badge :fase="$r->dominant_label" />
@@ -257,7 +257,9 @@
                         this.trendChartInstance.destroy();
                     }
 
-                    const ctx = this.$refs.trendChart.getContext('2d');
+                    const canvas = this.$refs.trendChart;
+                    if (!canvas) return;
+                    const ctx = canvas.getContext('2d');
                     const gradient = ctx.createLinearGradient(0, 0, 0, 250);
                     gradient.addColorStop(0, 'rgba(16, 185, 129, 0.3)');
                     gradient.addColorStop(1, 'rgba(16, 185, 129, 0.0)');
@@ -267,7 +269,7 @@
                         data: {
                             labels: data.map(d => d.label),
                             datasets: [{
-                                label: 'Deteksi',
+                                label: @json(__('dashboard.detection_label')),
                                 data: data.map(d => d.count),
                                 borderColor: '#10b981',
                                 backgroundColor: gradient,
@@ -284,6 +286,7 @@
                         options: {
                             responsive: true,
                             maintainAspectRatio: false,
+                            animation: { duration: 0 },
                             plugins: {
                                 legend: { display: false },
                                 tooltip: {
@@ -324,10 +327,16 @@
                         this.distributionChartInstance.destroy();
                     }
 
-                    this.distributionChartInstance = new window.Chart(this.$refs.distributionChart.getContext('2d'), {
+                    const distributionChartCanvas = this.$refs.distributionChart;
+                    if (!distributionChartCanvas) return;
+                    this.distributionChartInstance = new window.Chart(distributionChartCanvas.getContext('2d'), {
                         type: 'doughnut',
                         data: {
-                            labels: ['Mekar', 'Sangat Mekar', 'Penyemaian'],
+                            labels: [
+                                @json(__('messages.kondisi.Mekar')),
+                                @json(__('messages.kondisi.Sangat_Mekar')),
+                                @json(__('messages.kondisi.Penyemaian')),
+                            ],
                             datasets: [{
                                 data: [byClass.Mekar || 0, byClass.Sangat_Mekar || 0, byClass.Penyemaian || 0],
                                 backgroundColor: ['#f43f5e', '#ec4899', '#059669'],
@@ -338,6 +347,7 @@
                         options: {
                             responsive: true,
                             maintainAspectRatio: false,
+                            animation: { duration: 0 },
                             cutout: '65%',
                             plugins: {
                                 legend: {
@@ -370,12 +380,14 @@
                         this.hourlyChartInstance.destroy();
                     }
 
-                    this.hourlyChartInstance = new window.Chart(this.$refs.hourlyChart.getContext('2d'), {
+                    const hourlyChartCanvas = this.$refs.hourlyChart;
+                    if (!hourlyChartCanvas) return;
+                    this.hourlyChartInstance = new window.Chart(hourlyChartCanvas.getContext('2d'), {
                         type: 'bar',
                         data: {
                             labels: data.map(d => d.label),
                             datasets: [{
-                                label: 'Deteksi',
+                                label: @json(__('dashboard.detection_label')),
                                 data: data.map(d => d.count),
                                 backgroundColor: 'rgba(16, 185, 129, 0.7)',
                                 hoverBackgroundColor: '#10b981',
@@ -386,6 +398,7 @@
                         options: {
                             responsive: true,
                             maintainAspectRatio: false,
+                            animation: { duration: 0 },
                             plugins: {
                                 legend: { display: false },
                                 tooltip: {
@@ -426,10 +439,12 @@
                         this.sourceChartInstance.destroy();
                     }
 
-                    this.sourceChartInstance = new window.Chart(this.$refs.sourceChart.getContext('2d'), {
+                    const sourceChartCanvas = this.$refs.sourceChart;
+                    if (!sourceChartCanvas) return;
+                    this.sourceChartInstance = new window.Chart(sourceChartCanvas.getContext('2d'), {
                         type: 'doughnut',
                         data: {
-                            labels: ['Admin/User', 'Pengunjung'],
+                            labels: [@json(__('dashboard.admin_label')), @json(__('dashboard.guest_label'))],
                             datasets: [{
                                 data: [source.admin || 0, source.guest || 0],
                                 backgroundColor: ['#10b981', '#f59e0b'],
@@ -440,6 +455,7 @@
                         options: {
                             responsive: true,
                             maintainAspectRatio: false,
+                            animation: { duration: 0 },
                             cutout: '65%',
                             plugins: {
                                 legend: {

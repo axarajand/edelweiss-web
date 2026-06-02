@@ -49,4 +49,35 @@ return [
         'secondary' => 'Sign Up',
         'note' => 'Have an account? You can save detection history and view plant health statistics.',
     ],
+
+    // Research & Development section on landing
+    'research' => [
+        'eyebrow' => 'Research & Innovation',
+        'title' => 'Research & Development',
+        'subtitle' => 'Backed by scientific research and a dedicated team to ensure detection accuracy.',
+        'view_all' => 'More about R&D',
+        'read_more' => 'Read More',
+        'empty' => 'Information coming soon.',
+    ],
+
+    // Partners section on landing
+    'partners' => [
+        'eyebrow' => 'Collaboration',
+        'title' => 'Partners',
+        'subtitle' => 'Working with trusted institutions and organizations for Java Edelweiss conservation.',
+        'view_all' => 'View All Partners',
+        'placeholder' => 'Partner',
+        'coming_soon' => 'Partner list will be shown soon.',
+        'visit' => 'Visit',
+        'empty' => 'Partners coming soon.',
+    ],
+
+    // Gallery section on landing
+    'gallery' => [
+        'eyebrow' => 'Photo Collection',
+        'title' => 'Edelweiss Gallery',
+        'subtitle' => 'Photos of Java Edelweiss flowers from direct field research locations.',
+        'view_all' => 'View All Photos',
+        'empty' => 'Photos coming soon.',
+    ],
 ];

@@ -18,7 +18,7 @@ return [
 
     'register' => [
         'title' => 'Daftar Akun',
-        'subtitle' => 'Buat akun untuk menyimpan riwayat deteksi',
+        'subtitle' => 'Akun baru memerlukan persetujuan admin sebelum bisa login.',
         'name_label' => 'Nama Lengkap',
         'name_placeholder' => 'Nama lengkap Anda',
         'email_label' => 'Email',
@@ -32,6 +32,7 @@ return [
         'has_account' => 'Sudah punya akun?',
         'login_link' => 'Masuk di sini',
         'approval_note' => 'Akun Anda perlu disetujui admin sebelum bisa digunakan.',
+        'notice' => '<strong>Penting:</strong> Setelah daftar, akun Anda akan berstatus <em>pending</em> sampai disetujui oleh admin lain.',
     ],
 
     'pending' => [

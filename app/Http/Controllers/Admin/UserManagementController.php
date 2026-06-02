@@ -77,6 +77,10 @@ class UserManagementController extends Controller
 
     public function destroy(User $user)
     {
+        if (!Auth::user()->isSuperAdmin()) {
+            return back()->withErrors(['action' => 'Hanya Super Admin yang dapat menghapus user.']);
+        }
+
         if ($user->id === Auth::id()) {
             return back()->withErrors(['action' => 'Tidak bisa hapus akun sendiri.']);
         }

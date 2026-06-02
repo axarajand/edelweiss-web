@@ -12,8 +12,8 @@
 @php
     $currentLocale = app()->getLocale();
     $languages = [
-        'id' => ['code' => 'ID', 'name' => 'Indonesia', 'flag' => '🇮🇩'],
-        'en' => ['code' => 'EN', 'name' => 'English', 'flag' => '🇬🇧'],
+        'id' => ['code' => 'ID', 'name' => 'ID', 'flag' => '🇮🇩'],
+        'en' => ['code' => 'EN', 'name' => 'EN', 'flag' => '🇺🇸'],
     ];
     $current = $languages[$currentLocale] ?? $languages['id'];
 @endphp

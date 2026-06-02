@@ -29,4 +29,27 @@ return [
         'title' => 'Deteksi Terakhir',
         'view_all' => 'Lihat Semua',
     ],
+
+    'start_first_detection' => 'Mulai Deteksi Pertama',
+    'detection_label' => 'Deteksi',
+    'no_data_title' => 'Belum ada data',
+    'trend_empty' => 'Trend akan muncul setelah ada deteksi.',
+    'distribution_empty' => 'Grafik distribusi akan muncul setelah ada deteksi.',
+    'activity_empty' => 'Grafik aktivitas akan muncul setelah ada deteksi.',
+    'recent_empty' => 'Riwayat deteksi akan muncul di sini setelah Anda mulai mendeteksi.',
+    'recent_alt_text' => 'Deteksi',
+    'detection_id_prefix' => 'Deteksi',
+
+    'admin_vs_guest' => 'Admin vs Pengunjung',
+    'admin_label' => 'Admin/User',
+    'guest_label' => 'Pengunjung',
+    'empty_subtitle_recent' => 'Belum ada deteksi tercatat.',
+
+    'period_days_format' => ':days hari terakhir',
+    'period_7d' => '7 hari',
+    'period_30d' => '30 hari',
+    'period_90d' => '90 hari',
+    'all_detections' => 'Semua deteksi',
+    'activity_per_hour_title' => 'Aktivitas per Jam',
+    'activity_per_hour_subtitle' => 'Pola deteksi sepanjang 24 jam',
 ];

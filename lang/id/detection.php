@@ -2,6 +2,7 @@
 
 return [
     'title' => 'Deteksi Kesehatan',
+    'h1_guest' => 'Deteksi Kesehatan Bunga',
     'page_title' => 'Deteksi Kesehatan - Edelweiss Detection',
     'subtitle' => 'Upload foto atau gunakan kamera untuk mendeteksi kesehatan bunga Edelweiss Jawa.',
 
@@ -17,12 +18,19 @@ return [
         'detect_button' => 'Deteksi Sekarang',
         'detecting' => 'Mendeteksi...',
         'change_image' => 'Ganti Gambar',
+        'click_to_select' => 'Klik untuk pilih gambar',
+        'release_file' => 'Lepaskan file di sini',
+        'drag_drop_hint' => 'atau drag & drop file di sini',
+        'release_to_change' => 'Lepaskan untuk ganti gambar',
+        'ai_analyzing' => 'AI Sedang Menganalisis...',
+        'processing' => 'Memproses...',
     ],
 
     'camera' => [
         'start' => 'Mulai Kamera',
         'stop' => 'Stop Kamera',
         'capture' => 'Potret',
+        'capture_save' => 'Potret & Simpan',
         'capturing' => 'Menyimpan...',
         'inactive' => 'Kamera belum aktif',
         'live' => 'LIVE',
@@ -31,6 +39,10 @@ return [
         'stopped' => 'Berhenti',
         'enter_fullscreen' => 'Layar Penuh',
         'exit_fullscreen' => 'Keluar Layar Penuh',
+        'realtime_title' => 'Kamera Real-time',
+        'realtime_subtitle' => 'Tombol Potret akan aktif begitu bunga Edelweiss terdeteksi di layar kamera.',
+        'point_camera' => 'Arahkan kamera ke bunga Edelweiss...',
+        'stop_short' => 'Stop',
     ],
 
     'result' => [
@@ -41,6 +53,9 @@ return [
         'show_box' => 'Tampilkan Box',
         'hide_box' => 'Sembunyikan Box',
         'download_annotated' => 'Unduh',
+        'empty_title' => 'Belum ada hasil',
+        'empty_subtitle' => 'Upload gambar atau aktifkan kamera untuk mulai mendeteksi.',
+        'conditions_title' => 'Kondisi Kesehatan Edelweiss',
     ],
 
     'history_recent' => [
@@ -63,4 +78,12 @@ return [
         'camera_in_use' => 'Kamera sedang digunakan oleh aplikasi lain.',
         'camera_generic' => 'Tidak dapat mengakses kamera.',
     ],
+
+    'conditions_mekar' => 'Mekar',
+    'conditions_sangat_mekar' => 'Sangat Mekar',
+    'conditions_penyemaian' => 'Penyemaian',
+
+    'guest_cta_title' => 'Ingin akses fitur lengkap?',
+    'guest_cta_register' => 'Daftar akun',
+    'guest_cta_text' => 'untuk mengakses dashboard statistik, manajemen dataset, dan riwayat deteksi.',
 ];

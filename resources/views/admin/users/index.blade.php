@@ -1,15 +1,15 @@
-<x-layouts.app title="Manajemen User - Edelweiss Detection">
-    <x-slot:header>Manajemen User</x-slot:header>
+<x-layouts.app :title="__('users.title') . ' - ' . __('messages.brand_name')">
+    <x-slot:header>{{ __('users.title') }}</x-slot:header>
 
     <div class="space-y-6">
 
         {{-- Status filter tabs --}}
         <div class="flex flex-wrap gap-2">
             @foreach ([
-                'all' => 'Semua',
-                'pending' => 'Pending',
-                'approved' => 'Disetujui',
-                'rejected' => 'Ditolak',
+                'all' => __('users.tab_all'),
+                'pending' => __('users.tab_pending_short'),
+                'approved' => __('users.tab_approved'),
+                'rejected' => __('users.tab_rejected'),
             ] as $key => $label)
                 <a href="{{ route('admin.users.index', ['status' => $key]) }}"
                    class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition
@@ -31,19 +31,19 @@
         <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden">
             @if ($users->isEmpty())
                 <x-empty-state
-                    title="Tidak ada user"
-                    message="Belum ada user dengan status ini."
+                    :title="__('users.empty.no_users')"
+                    :message="__('users.empty.no_pending')"
                     icon="users" />
             @else
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
                         <thead class="text-left text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/50">
                             <tr>
-                                <th class="px-5 py-3 font-medium">User</th>
-                                <th class="px-5 py-3 font-medium">Status</th>
-                                <th class="px-5 py-3 font-medium">Daftar</th>
-                                <th class="px-5 py-3 font-medium">Disetujui</th>
-                                <th class="px-5 py-3 font-medium text-right">Aksi</th>
+                                <th class="px-5 py-3 font-medium">{{ __('users.col_user') }}</th>
+                                <th class="px-5 py-3 font-medium">{{ __('users.col_status') }}</th>
+                                <th class="px-5 py-3 font-medium">{{ __('users.col_registered') }}</th>
+                                <th class="px-5 py-3 font-medium">{{ __('users.col_approved') }}</th>
+                                <th class="px-5 py-3 font-medium text-right">{{ __('users.col_action') }}</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
@@ -62,17 +62,17 @@
                                         @if ($u->status === 'approved')
                                             <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-100 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-400">
                                                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                                Disetujui
+                                                {{ __('users.status_approved') }}
                                             </span>
                                         @elseif ($u->status === 'pending')
                                             <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 dark:bg-yellow-500/15 text-yellow-700 dark:text-yellow-400">
                                                 <span class="w-1.5 h-1.5 rounded-full bg-yellow-500"></span>
-                                                Pending
+                                                {{ __('users.status_pending') }}
                                             </span>
                                         @else
                                             <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-rose-100 dark:bg-rose-500/15 text-rose-700 dark:text-rose-400">
                                                 <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
-                                                Ditolak
+                                                {{ __('users.status_rejected') }}
                                             </span>
                                         @endif
                                     </td>
@@ -83,7 +83,7 @@
                                         @if ($u->approved_at)
                                             {{ $u->approved_at->format('d M Y') }}
                                             @if ($u->approver)
-                                                <p class="text-slate-400 dark:text-slate-500">oleh {{ $u->approver->name }}</p>
+                                                <p class="text-slate-400 dark:text-slate-500">{{ __('users.approved_by', ['name' => $u->approver->name]) }}</p>
                                             @endif
                                         @else
                                             —
@@ -92,15 +92,15 @@
                                     <td class="px-5 py-3">
                                         <div class="flex justify-end gap-1">
                                             @if ($u->id === auth()->id())
-                                                <span class="text-xs text-slate-400 italic px-2">Anda</span>
+                                                <span class="text-xs text-slate-400 italic px-2">{{ __('users.you_label') }}</span>
                                             @else
                                                 @if ($u->status !== 'approved')
                                                     <div x-data="approveAction({ approveUrl: '{{ route('admin.users.approve', $u) }}', name: '{{ addslashes($u->name) }}' })" class="inline">
                                                         <button type="button"
                                                                 @click="confirmApprove()"
                                                                 class="px-2.5 py-1 rounded-md text-xs font-medium bg-emerald-100 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-200 dark:hover:bg-emerald-500/25"
-                                                                title="Approve">
-                                                            Approve
+                                                                title="{{ __('users.btn_approve') }}">
+                                                            {{ __('users.btn_approve') }}
                                                         </button>
                                                         <form x-ref="approveForm" method="POST" action="{{ route('admin.users.approve', $u) }}" class="hidden">
                                                             @csrf
@@ -113,8 +113,8 @@
                                                         <button type="button"
                                                                 @click="confirmReject()"
                                                                 class="px-2.5 py-1 rounded-md text-xs font-medium bg-yellow-100 dark:bg-yellow-500/15 text-yellow-700 dark:text-yellow-400 hover:bg-yellow-200 dark:hover:bg-yellow-500/25"
-                                                                title="Reject">
-                                                            Tolak
+                                                                title="{{ __('users.btn_reject') }}">
+                                                            {{ __('users.btn_reject') }}
                                                         </button>
                                                         <form x-ref="rejectForm" method="POST" action="{{ route('admin.users.reject', $u) }}" class="hidden">
                                                             @csrf
@@ -122,19 +122,21 @@
                                                     </div>
                                                 @endif
 
-                                                {{-- Hapus selalu muncul (kecuali user sendiri) --}}
+                                                {{-- Hapus hanya untuk Super Admin --}}
+                                                @if (auth()->user()->isSuperAdmin())
                                                 <div x-data="deleteAction({ deleteUrl: '{{ route('admin.users.destroy', $u) }}', name: '{{ addslashes($u->name) }}' })" class="inline">
                                                     <button type="button"
                                                             @click="confirmDelete()"
                                                             class="px-2.5 py-1 rounded-md text-xs font-medium bg-rose-100 dark:bg-rose-500/15 text-rose-700 dark:text-rose-400 hover:bg-rose-200 dark:hover:bg-rose-500/25"
-                                                            title="Hapus">
-                                                        Hapus
+                                                            title="{{ __('users.btn_delete') }}">
+                                                        {{ __('users.btn_delete') }}
                                                     </button>
                                                     <form x-ref="deleteForm" method="POST" action="{{ route('admin.users.destroy', $u) }}" class="hidden">
                                                         @csrf
                                                         @method('DELETE')
                                                     </form>
                                                 </div>
+                                                @endif
                                             @endif
                                         </div>
                                     </td>
@@ -163,10 +165,10 @@
 
                 confirmApprove() {
                     Alpine.store('confirm').show({
-                        title: 'Setujui Pendaftaran?',
+                        title: @json(__('users.confirm_approve_title')),
                         message: `User "${this.userName}" akan disetujui dan dapat mengakses panel admin. Email pemberitahuan akan dikirim otomatis.`,
-                        confirmText: 'Setujui',
-                        cancelText: 'Batal',
+                        confirmText: @json(__('users.confirm_approve_btn')),
+                        cancelText: @json(__('users.confirm_cancel_btn')),
                         variant: 'default',
                         onConfirm: () => {
                             this.$refs.approveForm.submit();
@@ -183,10 +185,10 @@
 
                 confirmReject() {
                     Alpine.store('confirm').show({
-                        title: 'Tolak Pendaftaran?',
+                        title: @json(__('users.confirm_reject_title')),
                         message: `Pendaftaran user "${this.userName}" akan ditolak. User tidak dapat login namun datanya tetap tersimpan.`,
-                        confirmText: 'Tolak',
-                        cancelText: 'Batal',
+                        confirmText: @json(__('users.confirm_reject_btn')),
+                        cancelText: @json(__('users.confirm_cancel_btn')),
                         variant: 'danger',
                         onConfirm: () => {
                             this.$refs.rejectForm.submit();
@@ -205,8 +207,8 @@
                     Alpine.store('confirm').show({
                         title: 'Hapus User Permanen?',
                         message: `User "${this.userName}" akan dihapus secara permanen beserta semua data terkait. Tindakan ini tidak dapat dibatalkan.`,
-                        confirmText: 'Hapus',
-                        cancelText: 'Batal',
+                        confirmText: @json(__('users.confirm_delete_btn')),
+                        cancelText: @json(__('users.confirm_cancel_btn')),
                         variant: 'danger',
                         onConfirm: () => {
                             this.$refs.deleteForm.submit();

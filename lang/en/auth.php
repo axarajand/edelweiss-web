@@ -18,7 +18,7 @@ return [
 
     'register' => [
         'title' => 'Create Account',
-        'subtitle' => 'Create an account to save detection history',
+        'subtitle' => 'New accounts require admin approval before being able to sign in.',
         'name_label' => 'Full Name',
         'name_placeholder' => 'Your full name',
         'email_label' => 'Email',
@@ -32,6 +32,7 @@ return [
         'has_account' => 'Already have an account?',
         'login_link' => 'Sign in here',
         'approval_note' => 'Your account needs admin approval before it can be used.',
+        'notice' => '<strong>Important:</strong> After signing up, your account will have <em>pending</em> status until approved by another admin.',
     ],
 
     'pending' => [

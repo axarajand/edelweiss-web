@@ -64,6 +64,15 @@ class User extends Authenticatable
         return $this->status === self::STATUS_REJECTED;
     }
 
+    /**
+     * Super admin diidentifikasi dari email tetap.
+     * Hanya super admin yang boleh menghapus user.
+     */
+    public function isSuperAdmin(): bool
+    {
+        return $this->email === 'admin@edelweiss.local';
+    }
+
     // ==================== Avatar helpers ====================
 
     /**

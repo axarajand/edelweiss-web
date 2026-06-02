@@ -44,6 +44,9 @@
             checking_status: @json(__('messages.status.checking_status')),
             ml_active: 'ML Service: ' + @json(__('messages.status.active')),
             ml_offline: 'ML Service: ' + @json(__('messages.status.offline')),
+            enter_fullscreen: @json(__('detection.camera.enter_fullscreen')),
+            exit_fullscreen: @json(__('detection.camera.exit_fullscreen')),
+            objects_detected: @json(__('detection.result.objects_detected')),
         };
     </script>
 

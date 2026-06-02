@@ -50,4 +50,18 @@ return [
         'confirm' => 'Hapus',
         'cancel' => 'Batal',
     ],
+
+    'total_history' => 'Total Riwayat',
+    'history_delete_selected' => 'Hapus Pilihan',
+    'confirm_single_title' => 'Hapus Deteksi #:id?',
+    'confirm_single_msg' => 'Deteksi beserta gambar terkait akan dihapus secara permanen. Tindakan ini tidak bisa dibatalkan.',
+    'confirm_multi_title' => 'Hapus :count Deteksi?',
+    'filter_condition' => 'Kondisi',
+    'filter_source' => 'Sumber',
+
+    'guest_badge' => 'Pengunjung',
+
+    'confirm_multi_msg' => ':count deteksi terpilih beserta gambarnya akan dihapus secara permanen. Tindakan ini tidak bisa dibatalkan.',
+    'confirm_delete_all_btn' => 'Hapus Semua',
+    'confirm_cancel_btn' => 'Batal',
 ];

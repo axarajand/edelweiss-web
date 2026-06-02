@@ -49,4 +49,35 @@ return [
         'secondary' => 'Daftar Akun',
         'note' => 'Punya akun? Anda dapat menyimpan riwayat deteksi dan melihat statistik kesehatan tanaman.',
     ],
+
+    // Research & Development section di landing
+    'research' => [
+        'eyebrow' => 'Riset & Inovasi',
+        'title' => 'Research & Development',
+        'subtitle' => 'Didukung oleh penelitian ilmiah dan tim peneliti untuk memastikan akurasi deteksi.',
+        'view_all' => 'Selengkapnya tentang R&D',
+        'read_more' => 'Baca Selengkapnya',
+        'empty' => 'Informasi segera hadir.',
+    ],
+
+    // Partners section di landing
+    'partners' => [
+        'eyebrow' => 'Kolaborasi',
+        'title' => 'Partner',
+        'subtitle' => 'Bersama institusi dan organisasi terpercaya untuk konservasi Edelweiss Jawa.',
+        'view_all' => 'Lihat Semua Partner',
+        'placeholder' => 'Partner',
+        'coming_soon' => 'Daftar mitra akan segera ditampilkan.',
+        'visit' => 'Kunjungi',
+        'empty' => 'Partner segera hadir.',
+    ],
+
+    // Gallery section di landing
+    'gallery' => [
+        'eyebrow' => 'Koleksi Foto',
+        'title' => 'Galeri Edelweiss',
+        'subtitle' => 'Foto-foto bunga Edelweiss Jawa dari lokasi penelitian langsung di lapangan.',
+        'view_all' => 'Lihat Semua Foto',
+        'empty' => 'Foto segera hadir.',
+    ],
 ];
