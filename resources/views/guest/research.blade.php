@@ -25,7 +25,7 @@
             <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-8">
                 {{ __('content.research.highlights_title') }}
             </h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5">
                     <div class="w-11 h-11 rounded-xl bg-emerald-100 dark:bg-emerald-500/15 flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-4">
                         <x-icon name="scan" class="w-5 h-5" />
@@ -39,20 +39,6 @@
                     </div>
                     <h3 class="font-bold text-slate-900 dark:text-white mb-1.5">{{ __('content.research.hl_dataset_title') }}</h3>
                     <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{{ __('content.research.hl_dataset_desc') }}</p>
-                </div>
-                <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5">
-                    <div class="w-11 h-11 rounded-xl bg-amber-100 dark:bg-amber-500/15 flex items-center justify-center text-amber-600 dark:text-amber-400 mb-4">
-                        <x-icon name="check-circle" class="w-5 h-5" />
-                    </div>
-                    <h3 class="font-bold text-slate-900 dark:text-white mb-1.5">{{ __('content.research.hl_output_title') }}</h3>
-                    <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{{ __('content.research.hl_output_desc') }}</p>
-                </div>
-                <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5">
-                    <div class="w-11 h-11 rounded-xl bg-purple-100 dark:bg-purple-500/15 flex items-center justify-center text-purple-600 dark:text-purple-400 mb-4">
-                        <x-icon name="chart" class="w-5 h-5" />
-                    </div>
-                    <h3 class="font-bold text-slate-900 dark:text-white mb-1.5">{{ __('content.research.hl_roadmap_title') }}</h3>
-                    <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{{ __('content.research.hl_roadmap_desc') }}</p>
                 </div>
             </div>
         </div>

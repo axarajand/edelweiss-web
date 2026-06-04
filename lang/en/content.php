@@ -26,7 +26,7 @@ return [
         'hl_method_title' => 'Two-Stage Method',
         'hl_method_desc' => 'YOLOv11 detects & localizes flowers, then MLP classifies their health level.',
         'hl_dataset_title' => 'Field Dataset',
-        'hl_dataset_desc' => '3,000 Edelweiss flower images collected directly from natural habitat at Mount Lawu.',
+        'hl_dataset_desc' => '3,000 Edelweiss flower images collected directly from natural habitat at Mount Gede Pangrango and Mount Lawu.',
         'hl_output_title' => 'Research Output',
         'hl_output_desc' => 'A reputable international journal article (Data and Metadata) and a software IP right.',
         'hl_roadmap_title' => 'Roadmap',

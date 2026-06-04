@@ -27,7 +27,7 @@ return [
         'hl_method_title' => 'Metode Dua Tahap',
         'hl_method_desc' => 'YOLOv11 mendeteksi & melokalisasi bunga, lalu MLP mengklasifikasikan tingkat kesehatannya.',
         'hl_dataset_title' => 'Dataset Lapangan',
-        'hl_dataset_desc' => '3.000 citra bunga Edelweis yang diambil langsung dari habitat alami di Gunung Lawu.',
+        'hl_dataset_desc' => '3.000 citra bunga Edelweis yang diambil langsung dari habitat alami di Gunung Gede Pangrango dan Gunung Lawu.',
         'hl_output_title' => 'Luaran Penelitian',
         'hl_output_desc' => 'Artikel jurnal internasional bereputasi (Data and Metadata) serta HAKI program komputer.',
         'hl_roadmap_title' => 'Peta Jalan',
